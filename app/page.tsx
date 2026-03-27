@@ -1,36 +1,36 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, CheckCircle2, MoveRight, Sparkles } from "lucide-react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { ArrowRight, CheckCircle2 } from "lucide-react";
 
-const sections = {
-  eligibility: [
-    "Open to high school students currently enrolled in grades 9-12.",
-    "Students may submit up to two original pieces created with AI-assisted tools.",
-    "Individual entries only for this first-year pilot."
-  ],
-  timeline: [
-    "Submissions open April 8.",
-    "Virtual workshop and Q&A on April 20.",
-    "Gallery access opens May 6.",
-    "Results announced May 18."
-  ],
-  prizes: [
-    "1st place: UCLA campus visit.",
-    "2nd place: Mentorship session with organizers.",
-    "Honorable mentions selected by judges and organizers."
-  ],
-  rules: [
-    "Submit your prompt log and a short process statement.",
-    "Work must be your own and created specifically for this competition cycle.",
-    "Organizers may remove entries that violate the integrity or content guidelines."
-  ],
-  ethics: [
-    "We value transparency about tools and prompting choices.",
-    "The strongest entries use AI intentionally, not as a substitute for authorship.",
-    "Students should avoid styles that imitate living artists without permission."
-  ]
-};
+const themes = ["Future Cities", "Nature", "Community", "Identity"];
+
+const requirements = [
+  "Final artwork in high resolution",
+  "Prompt log and base sketches",
+  "List of AI tools used",
+  "Creative process statement, 50 to 200 words",
+  "Signed academic and ethical integrity agreement"
+];
+
+const rules = [
+  "No hate speech, discriminatory imagery, or harassment",
+  "No explicit sexual content, nudity, or graphic violence",
+  "No political propaganda or charged messaging",
+  "Sensitive themes may be explored if they are handled respectfully with thoughtful artistic intent"
+];
+
+const ethics = [
+  "Avoid prompting in the style of living artists",
+  "Avoid copyrighted characters or IP",
+  "Look to public domain or self created content",
+  "Use free public AI generative tools"
+];
+
+const prizes = [
+  "1st place, $150",
+  "2nd place, $100",
+  "3rd place, $50"
+];
 
 export default function HomePage() {
   return (
@@ -47,7 +47,7 @@ export default function HomePage() {
               Competition
             </h1>
             <p className="mt-6 text-lg leading-8 text-slate-600">
-              Organized by UCLA student groups and local volunteers. Students submit original AI-assisted artwork with a short prompt log and a clear process statement.
+              Organized by UCLA student groups and local volunteers. Open to high school students. Students choose one theme and use free public AI tools to make original artwork.
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <Link href="/submit" className="inline-flex h-12 items-center justify-center rounded-xl bg-primary px-6 text-sm font-semibold text-primary-foreground shadow-[0_10px_24px_rgba(33,99,179,0.22)] transition-all hover:-translate-y-0.5 hover:bg-primary/92">
@@ -66,96 +66,97 @@ export default function HomePage() {
               <StatCard label="Access" value="Invite code" />
             </div>
           </div>
-          <div className="surface-card p-5">
-            <div className="overflow-hidden rounded-[24px] bg-slate-950 shadow-[0_20px_45px_rgba(12,18,30,0.22)]">
-              <Image
-                src="/demo/transit-memories.svg"
-                alt="Featured competition artwork"
-                width={1200}
-                height={900}
-                className="h-full w-full object-cover"
-                priority
-              />
-            </div>
+          <div className="overflow-hidden rounded-[32px] border border-white/85 bg-slate-950 shadow-[0_24px_55px_rgba(35,59,92,0.14)]">
+            <Image
+              src="/demo/transit-memories.svg"
+              alt="Featured competition artwork"
+              width={1200}
+              height={900}
+              className="h-full w-full object-cover"
+              priority
+            />
           </div>
         </div>
       </section>
 
       <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
-        <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-[1.1fr_0.9fr_0.8fr]">
-          <InfoFeature
-            label="Our mission"
-            title="A grounded competition for student artists working with new tools"
-            description="We are looking for thoughtful submissions that show both experimentation and authorship. The strongest entries explain how the student shaped the final result."
-            className="md:col-span-2 xl:col-span-1"
-          />
-          <InfoFeature
-            label="Approach"
-            title="AI art with clear process notes"
-            description="Prompt logs and process statements matter. We are not looking for hype. We are looking for work that is intentional, documented, and honestly presented."
-            className="bg-[linear-gradient(180deg,rgba(245,236,255,0.96),rgba(239,228,255,0.92))]"
-          />
-          <MiniFeature
-            title="Open submission"
-            description="Any high school student in grades 9-12 may apply with up to two original entries."
-            className="bg-[linear-gradient(180deg,rgba(217,248,255,0.96),rgba(203,238,255,0.92))]"
-          />
-          <MiniFeature
-            title="Workshop"
-            description="A short online walkthrough covers prompt logging, eligibility, and review expectations."
-            className="bg-[linear-gradient(180deg,rgba(246,250,253,0.96),rgba(233,240,245,0.92))]"
-          />
-          <MiniFeature
-            title="Gallery access"
-            description="Signed-in viewers and judges enter with a short code so the event stays private and manageable."
-            className="bg-[linear-gradient(180deg,rgba(245,247,252,0.96),rgba(237,241,250,0.92))]"
-          />
-        </div>
-      </section>
-
-      <section className="border-y border-white/70 bg-white/45">
-        <div className="mx-auto grid max-w-6xl gap-10 px-4 py-16 sm:px-6 lg:grid-cols-[0.9fr_1.1fr]">
+        <div className="grid gap-12 lg:grid-cols-2">
           <div>
-            <p className="section-label">Timeline & rewards</p>
-            <h2 className="mt-4 text-4xl font-semibold tracking-[-0.05em] text-slate-950">Clear deadlines, simple review, modest prizes</h2>
-            <div className="mt-10 space-y-8">
-              {sections.timeline.map((item, index) => (
-                <div key={item} className="grid grid-cols-[40px_1fr] gap-4">
-                  <p className="text-3xl font-semibold tracking-[-0.06em] text-slate-300">
-                    {String(index + 1).padStart(2, "0")}
-                  </p>
-                  <div>
-                    <p className="text-lg font-semibold text-slate-900">{timelineTitles[index]}</p>
-                    <p className="mt-1 text-sm leading-6 text-slate-600">{item}</p>
-                  </div>
+            <p className="section-label">Themes</p>
+            <h2 className="mt-4 text-4xl font-semibold tracking-[-0.05em] text-slate-950">Choose one theme</h2>
+            <p className="mt-4 max-w-xl text-base leading-7 text-slate-600">
+              Each submission should fit one theme.
+            </p>
+            <div className="mt-8 grid gap-3 sm:grid-cols-2">
+              {themes.map((theme) => (
+                <div key={theme} className="rounded-[22px] border border-slate-200 bg-white/85 px-5 py-4 text-lg font-medium text-slate-900 shadow-[0_12px_30px_rgba(35,59,92,0.06)]">
+                  {theme}
                 </div>
               ))}
             </div>
           </div>
-          <div className="space-y-5">
-            <RewardCard title="Eligibility" items={sections.eligibility} />
-            <RewardCard title="Prizes" items={sections.prizes} highlight />
-            <RewardCard title="Workshop & info session" items={["Optional and open to all participants.", "Organizers will walk through submission expectations, prompt logging, and review standards."]} />
+          <div>
+            <p className="section-label">Submission requirements</p>
+            <h2 className="mt-4 text-4xl font-semibold tracking-[-0.05em] text-slate-950">What to submit</h2>
+            <ul className="mt-8 space-y-4">
+              {requirements.map((item) => (
+                <li key={item} className="flex gap-3 text-sm leading-6 text-slate-600">
+                  <CheckCircle2 className="mt-1 h-4 w-4 shrink-0 text-primary" />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section className="border-y border-white/70 bg-white/45">
+        <div className="mx-auto grid max-w-6xl gap-12 px-4 py-16 sm:px-6 lg:grid-cols-2">
+          <div>
+            <p className="section-label">Rules</p>
+            <h2 className="mt-4 text-4xl font-semibold tracking-[-0.05em] text-slate-950">Keep it respectful</h2>
+            <ul className="mt-8 space-y-4">
+              {rules.map((item) => (
+                <li key={item} className="flex gap-3 text-sm leading-6 text-slate-600">
+                  <CheckCircle2 className="mt-1 h-4 w-4 shrink-0 text-primary" />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div>
+            <p className="section-label">AI art ethics</p>
+            <h2 className="mt-4 text-4xl font-semibold tracking-[-0.05em] text-slate-950">Use AI with care</h2>
+            <ul className="mt-8 space-y-4">
+              {ethics.map((item) => (
+                <li key={item} className="flex gap-3 text-sm leading-6 text-slate-600">
+                  <CheckCircle2 className="mt-1 h-4 w-4 shrink-0 text-primary" />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
       </section>
 
       <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
-        <div className="grid gap-10 lg:grid-cols-[0.95fr_1.05fr]">
+        <div className="grid gap-12 lg:grid-cols-[0.9fr_1.1fr]">
           <div>
-            <p className="section-label">AI art ethics & rules</p>
-            <h2 className="mt-4 text-4xl font-semibold tracking-[-0.05em] text-slate-950">Transparent submissions matter more than polished language</h2>
+            <p className="section-label">Prizes</p>
+            <h2 className="mt-4 text-4xl font-semibold tracking-[-0.05em] text-slate-950">Cash prizes and a UCLA tour</h2>
             <p className="mt-5 text-base leading-7 text-slate-600">
-              We want to see how students used these tools, what they changed, and what decisions made the work theirs.
+              All podium winners will be invited to a UCLA tour after the event. Parking and lunch will be covered.
             </p>
-            <div className="mt-8 rounded-[24px] border border-slate-200 bg-white px-6 py-5 text-sm italic leading-7 text-slate-600 shadow-[0_18px_45px_rgba(35,59,92,0.06)]">
-              “AI is a brush, not the artist. We judge the hand that guided the process.”
-              <p className="mt-3 not-italic text-slate-500">Student organizer review note</p>
-            </div>
           </div>
-          <div className="grid gap-5 md:grid-cols-2">
-            <RuleList title="Rules" items={sections.rules} />
-            <RuleList title="Ethics" items={sections.ethics} />
+          <div className="grid gap-4 sm:grid-cols-3">
+            {prizes.map((item, index) => (
+              <div key={item} className="rounded-[24px] border border-slate-200 bg-white px-5 py-6 shadow-[0_12px_30px_rgba(35,59,92,0.06)]">
+                <p className="section-label">{index === 0 ? "1st" : index === 1 ? "2nd" : "3rd"}</p>
+                <p className="mt-3 text-2xl font-semibold tracking-[-0.04em] text-slate-950">
+                  {item.split(", ")[1]}
+                </p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -181,106 +182,11 @@ export default function HomePage() {
   );
 }
 
-const timelineTitles = ["Submission window", "Workshop", "Review", "Gallery launch"];
-
 function StatCard({ label, value }: { label: string; value: string }) {
   return (
     <div className="rounded-[22px] border border-white/80 bg-white/85 px-4 py-4 shadow-[0_18px_35px_rgba(35,59,92,0.06)]">
       <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-slate-500">{label}</p>
       <p className="mt-2 text-xl font-semibold tracking-[-0.04em] text-slate-950">{value}</p>
     </div>
-  );
-}
-
-function InfoFeature({
-  label,
-  title,
-  description,
-  className
-}: {
-  label: string;
-  title: string;
-  description: string;
-  className?: string;
-}) {
-  return (
-    <Card className={`bg-[linear-gradient(180deg,rgba(255,255,255,0.96),rgba(244,247,252,0.92))] ${className ?? ""}`}>
-      <CardHeader>
-        <p className="section-label">{label}</p>
-        <CardTitle className="mt-3 text-[2rem] leading-tight tracking-[-0.05em] text-slate-950">{title}</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <p className="max-w-xl text-base leading-7 text-slate-600">{description}</p>
-      </CardContent>
-    </Card>
-  );
-}
-
-function MiniFeature({
-  title,
-  description,
-  className
-}: {
-  title: string;
-  description: string;
-  className?: string;
-}) {
-  return (
-    <Card className={className}>
-      <CardHeader className="pb-4">
-        <div className="flex items-center gap-2 text-primary">
-          <Sparkles className="h-4 w-4" />
-          <span className="section-label !tracking-[0.18em] !text-primary">Info</span>
-        </div>
-        <CardTitle className="text-2xl tracking-[-0.04em] text-slate-950">{title}</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <p className="text-sm leading-6 text-slate-600">{description}</p>
-      </CardContent>
-    </Card>
-  );
-}
-
-function RewardCard({
-  title,
-  items,
-  highlight
-}: {
-  title: string;
-  items: string[];
-  highlight?: boolean;
-}) {
-  return (
-    <Card className={highlight ? "bg-[linear-gradient(180deg,rgba(255,255,255,0.98),rgba(240,247,255,0.96))]" : ""}>
-      <CardHeader>
-        <CardTitle className="text-2xl tracking-[-0.04em] text-slate-950">{title}</CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-3">
-        {items.map((item) => (
-          <div key={item} className="flex items-start gap-3 text-sm leading-6 text-slate-600">
-            <MoveRight className="mt-1 h-4 w-4 shrink-0 text-primary" />
-            <p>{item}</p>
-          </div>
-        ))}
-      </CardContent>
-    </Card>
-  );
-}
-
-function RuleList({ title, items }: { title: string; items: string[] }) {
-  return (
-    <Card className="bg-[linear-gradient(180deg,rgba(255,255,255,0.98),rgba(244,247,252,0.92))]">
-      <CardHeader>
-        <CardTitle className="text-2xl tracking-[-0.04em] text-slate-950">{title}</CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-4">
-        {items.map((item) => (
-          <div key={item} className="flex gap-3">
-            <CheckCircle2 className="mt-1 h-4 w-4 shrink-0 text-primary" />
-            <p className="text-sm leading-6 text-slate-600">{item}</p>
-          </div>
-        ))}
-      </CardContent>
-    </Card>
   );
 }

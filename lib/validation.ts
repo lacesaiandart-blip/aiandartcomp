@@ -1,7 +1,12 @@
 import { z } from "zod";
 
 const MIN_PROMPT_LOG_LENGTH = 40;
-const MIN_PROCESS_STATEMENT_LENGTH = 80;
+const MIN_PROCESS_STATEMENT_WORDS = 50;
+const MAX_PROCESS_STATEMENT_WORDS = 200;
+
+function wordCount(value: string) {
+  return value.trim().split(/\s+/).filter(Boolean).length;
+}
 
 function minLengthMessage(value: string, minimum: number, fieldLabel: string, guidance: string) {
   const trimmed = value.trim();
@@ -27,8 +32,8 @@ export const submissionSchema = z.object({
         message: minLengthMessage(
           value,
           MIN_PROMPT_LOG_LENGTH,
-          "Prompt log",
-          "Include the key prompts you tried, what changed between versions, and any edits you made after generation."
+          "Prompt log and base sketches",
+          "Include the key prompts, any base sketches you used, what changed between versions, and any edits you made after generation."
         )
       });
     }
@@ -38,15 +43,19 @@ export const submissionSchema = z.object({
     .trim()
     .min(2, "List the AI tools you used, for example ChatGPT, Midjourney, Photoshop, or Firefly."),
   creative_process_statement: z.string().superRefine((value, ctx) => {
-    if (value.trim().length < MIN_PROCESS_STATEMENT_LENGTH) {
+    const words = wordCount(value);
+
+    if (words < MIN_PROCESS_STATEMENT_WORDS) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        message: minLengthMessage(
-          value,
-          MIN_PROCESS_STATEMENT_LENGTH,
-          "Creative process statement",
-          "Explain your idea, what artistic choices you made, and how you shaped the final result beyond the first generation."
-        )
+        message: `Creative process statement is too short. Write at least ${MIN_PROCESS_STATEMENT_WORDS} words. Explain your idea, the choices you made, and how you shaped the final result.`
+      });
+    }
+
+    if (words > MAX_PROCESS_STATEMENT_WORDS) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: `Creative process statement is too long. Keep it under ${MAX_PROCESS_STATEMENT_WORDS} words.`
       });
     }
   }),

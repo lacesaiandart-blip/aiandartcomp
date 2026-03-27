@@ -26,7 +26,7 @@ export default async function SubmitPage({
             Submit your artwork
           </h1>
           <p className="mt-5 max-w-2xl text-lg leading-8 text-slate-600">
-            Share the final image, the tools you used, and the process notes that explain how the piece developed. Review usually takes 24-48 hours.
+            Upload the final image, list the AI tools used, and include your prompt log, base sketches, and a short process statement. Review usually takes 24 to 48 hours.
           </p>
         </div>
 
@@ -61,14 +61,15 @@ export default async function SubmitPage({
           <NotificationCenter notifications={notifications} />
           <Card className="h-fit bg-[linear-gradient(180deg,rgba(255,255,255,0.98),rgba(245,237,255,0.92))]">
             <CardHeader>
-              <CardTitle>Submission guidelines</CardTitle>
-              <CardDescription>Keep submissions specific, honest, and easy to review.</CardDescription>
+              <CardTitle>Submission requirements</CardTitle>
+              <CardDescription>Keep it simple and complete.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4 text-sm leading-6 text-muted-foreground">
-              <Guideline title="Open source and commercial tools are both fine" body="What matters is whether you explain your process clearly and submit original work." />
-              <Guideline title="Prompt logs should show the main steps" body="Include the key prompts, revisions, and manual edits that shaped the final image." />
-              <Guideline title="Creative process statements should be specific" body="Tell reviewers what you changed, what you rejected, and what decisions made the work yours." />
-              <Guideline title="Removed entries" body="Submissions that omit process details, copy living artists directly, or violate content guidelines may be rejected." />
+              <Guideline title="Final artwork" body="Upload one high resolution image." />
+              <Guideline title="Prompt log and base sketches" body="Include the prompts you used and any base sketches if you used them." />
+              <Guideline title="AI tools used" body="This is required for every submission." />
+              <Guideline title="Creative process statement" body="Write 50 to 200 words." />
+              <Guideline title="Integrity agreement" body="You must sign the academic and ethical integrity agreement." />
             </CardContent>
           </Card>
         </div>

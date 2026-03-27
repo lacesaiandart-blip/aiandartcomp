@@ -63,28 +63,8 @@ export function SiteShell({ user, children }: SiteShellProps) {
       </header>
       {children}
       <footer className="border-t border-white/70 bg-white/60">
-        <div className="mx-auto grid max-w-6xl gap-8 px-4 py-10 text-sm text-slate-500 sm:px-6 md:grid-cols-[1.2fr_0.8fr_0.8fr]">
-          <div>
-            <p className="text-base font-semibold text-slate-900">AI Art Competition</p>
-            <p className="mt-3 max-w-xs leading-6">
-              Organized by UCLA student groups and local volunteers for high school students exploring digital art and AI-assisted process.
-            </p>
-          </div>
-          <div>
-            <p className="section-label">Resources</p>
-            <div className="mt-3 space-y-2">
-              <Link href="/submit" className="block transition-colors hover:text-slate-900">Submission portal</Link>
-              <Link href="/gallery/access" className="block transition-colors hover:text-slate-900">Gallery access</Link>
-              <Link href="/judge/access" className="block transition-colors hover:text-slate-900">Judge access</Link>
-            </div>
-          </div>
-          <div>
-            <p className="section-label">Contact</p>
-            <div className="mt-3 space-y-2">
-              <a href="mailto:aiartcompetition@ucla.edu" className="block transition-colors hover:text-slate-900">aiartcompetition@ucla.edu</a>
-              <p>Review updates usually take 24-48 hours.</p>
-            </div>
-          </div>
+        <div className="mx-auto max-w-6xl px-4 py-8 text-sm text-slate-600 sm:px-6">
+          Organized by UCLA student groups and local volunteers
         </div>
       </footer>
     </div>
