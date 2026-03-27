@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { isDemoMode } from "@/lib/env";
@@ -54,10 +53,14 @@ export default async function JudgePage({
                 key={submission.id}
                 className={cn(alreadyVoted && "border-amber-400 bg-amber-50/55 shadow-[0_0_0_1px_rgba(217,119,6,0.18)]")}
               >
-                <div className="grid gap-6 p-6 lg:grid-cols-[0.9fr_1.1fr]">
-                  <div className="relative aspect-[4/3] overflow-hidden rounded-lg border bg-secondary">
+                <div>
+                  <div className="relative border-b border-slate-200 bg-slate-950">
                     {imageUrls[index] ? (
-                      <Image src={imageUrls[index] as string} alt={submission.artwork_title} fill className="object-cover" />
+                      <img
+                        src={imageUrls[index] as string}
+                        alt={submission.artwork_title}
+                        className="block h-auto w-full"
+                      />
                     ) : null}
                     {alreadyVoted ? (
                       <div className="absolute left-3 top-3 rounded-full bg-amber-500 px-3 py-1 text-xs font-medium uppercase tracking-[0.14em] text-white">
@@ -65,7 +68,7 @@ export default async function JudgePage({
                       </div>
                     ) : null}
                   </div>
-                  <div className="space-y-4">
+                  <div className="space-y-4 p-6">
                     <div>
                       <h2 className="text-xl font-semibold">{submission.artwork_title}</h2>
                       <p className="text-sm text-muted-foreground">{submission.student_name} · {submission.school} · {submission.theme}</p>

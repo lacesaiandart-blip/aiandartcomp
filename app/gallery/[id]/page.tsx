@@ -1,5 +1,5 @@
-import Image from "next/image";
 import { notFound } from "next/navigation";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { getSession } from "@/lib/auth";
 import { requireGalleryAccess } from "@/lib/access";
@@ -31,10 +31,21 @@ export default async function GalleryDetailPage({
   return (
     <main className="page-wash">
       <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:py-14">
-        <div className="overflow-hidden rounded-[32px] border border-white/80 bg-white shadow-[0_25px_60px_rgba(35,59,92,0.12)]">
-          <div className="grid gap-0 lg:grid-cols-[1.2fr_0.8fr]">
-            <div className="relative min-h-[360px] bg-slate-950 lg:min-h-[700px]">
-              {imageUrl ? <Image src={imageUrl} alt={submission.artwork_title} fill className="object-cover" /> : null}
+        <div className="mb-5">
+          <Link href="/gallery" className="inline-flex items-center rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50">
+            Back to Gallery
+          </Link>
+        </div>
+        <div className="rounded-[32px] border border-white/80 bg-white shadow-[0_25px_60px_rgba(35,59,92,0.12)]">
+          <div>
+            <div className="border-b border-slate-200 bg-slate-950">
+              {imageUrl ? (
+                <img
+                  src={imageUrl}
+                  alt={submission.artwork_title}
+                  className="block h-auto w-full"
+                />
+              ) : null}
             </div>
             <div className="p-6 sm:p-8">
               <div className="space-y-5 text-sm leading-6 text-slate-600">
