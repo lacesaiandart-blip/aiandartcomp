@@ -80,6 +80,22 @@ export async function createSignedImageUrl(path: string) {
   return data?.signedUrl ?? null;
 }
 
+export async function createSignedImageUrls(paths: string[]) {
+  if (isDemoMode) {
+    return paths;
+  }
+
+  if (paths.length === 0) {
+    return [];
+  }
+
+  const admin = createAdminClient();
+  const { data } = await admin.storage.from(env.storageBucket).createSignedUrls(paths, 60 * 60);
+  const signedUrlByPath = new Map((data ?? []).map((item) => [item.path ?? "", item.signedUrl]));
+
+  return paths.map((path) => signedUrlByPath.get(path) ?? null);
+}
+
 export async function getAdminSubmissions() {
   if (isDemoMode) {
     return demoSubmissions;

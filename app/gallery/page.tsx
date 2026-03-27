@@ -1,8 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
-import { getSession } from "@/lib/auth";
 import { requireGalleryAccess } from "@/lib/access";
-import { createSignedImageUrl, getApprovedSubmissions, getUserVoteSubmissionIds } from "@/lib/queries";
+import { createSignedImageUrls, getApprovedSubmissions, getUserVoteSubmissionIds } from "@/lib/queries";
 import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { MAX_VOTES_PER_USER } from "@/lib/votes";
@@ -12,18 +11,19 @@ export default async function GalleryPage({
 }: {
   searchParams: { theme?: string; school?: string };
 }) {
-  await requireGalleryAccess();
-  const user = await getSession();
-  const submissions = await getApprovedSubmissions({
-    theme: searchParams.theme,
-    school: searchParams.school
-  });
-  const voteIds = user ? await getUserVoteSubmissionIds(user.id) : [];
+  const user = await requireGalleryAccess();
+  const [submissions, voteIds] = await Promise.all([
+    getApprovedSubmissions({
+      theme: searchParams.theme,
+      school: searchParams.school
+    }),
+    getUserVoteSubmissionIds(user.id)
+  ]);
   const remainingVotes = Math.max(MAX_VOTES_PER_USER - voteIds.length, 0);
 
   const themes = [...new Set(submissions.map((item) => item.theme))];
   const schools = [...new Set(submissions.map((item) => item.school))];
-  const imageUrls = await Promise.all(submissions.map((item) => createSignedImageUrl(item.image_path)));
+  const imageUrls = await createSignedImageUrls(submissions.map((item) => item.image_path));
 
   return (
     <main className="page-wash">

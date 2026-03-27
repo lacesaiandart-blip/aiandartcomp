@@ -1,52 +1,28 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { createServerClient } from "@supabase/ssr";
-import type { CookieOptions } from "@supabase/ssr";
 import { isDemoMode } from "@/lib/env";
 
 const protectedPrefixes = ["/submit", "/gallery", "/judge", "/admin"];
+
+function hasSupabaseSessionCookie(request: NextRequest) {
+  return request.cookies
+    .getAll()
+    .some((cookie) => cookie.name.startsWith("sb-") && cookie.name.includes("auth-token"));
+}
 
 export async function middleware(request: NextRequest) {
   if (isDemoMode) {
     return NextResponse.next();
   }
 
-  const response = NextResponse.next({
-    request: {
-      headers: request.headers
-    }
-  });
-
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        get(name: string) {
-          return request.cookies.get(name)?.value;
-        },
-        set(name: string, value: string, options: CookieOptions) {
-          response.cookies.set({ name, value, ...options });
-        },
-        remove(name: string, options: CookieOptions) {
-          response.cookies.set({ name, value: "", ...options });
-        }
-      }
-    }
-  );
-
-  const {
-    data: { user }
-  } = await supabase.auth.getUser();
-
   const needsAuth = protectedPrefixes.some((prefix) => request.nextUrl.pathname.startsWith(prefix));
-  if (needsAuth && !user) {
+  if (needsAuth && !hasSupabaseSessionCookie(request)) {
     const url = request.nextUrl.clone();
     url.pathname = "/sign-in";
     url.searchParams.set("next", request.nextUrl.pathname + request.nextUrl.search);
     return NextResponse.redirect(url);
   }
 
-  return response;
+  return NextResponse.next();
 }
 
 export const config = {

@@ -2,7 +2,7 @@ import Image from "next/image";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { isDemoMode } from "@/lib/env";
-import { createSignedImageUrl, getApprovedSubmissions, getUserVoteSubmissionIds } from "@/lib/queries";
+import { createSignedImageUrls, getApprovedSubmissions, getUserVoteSubmissionIds } from "@/lib/queries";
 import { requireJudgeAccess } from "@/lib/access";
 import { removeVoteAction, submitVoteAction } from "@/lib/actions";
 import { cn } from "@/lib/utils";
@@ -14,10 +14,13 @@ export default async function JudgePage({
   searchParams: { error?: string; success?: string };
 }) {
   const { user } = await requireJudgeAccess();
-  const submissions = await getApprovedSubmissions();
-  const votedIds = new Set(await getUserVoteSubmissionIds(user.id));
+  const [submissions, voteIds] = await Promise.all([
+    getApprovedSubmissions(),
+    getUserVoteSubmissionIds(user.id)
+  ]);
+  const votedIds = new Set(voteIds);
   const remainingVotes = Math.max(MAX_VOTES_PER_USER - votedIds.size, 0);
-  const imageUrls = await Promise.all(submissions.map((item) => createSignedImageUrl(item.image_path)));
+  const imageUrls = await createSignedImageUrls(submissions.map((item) => item.image_path));
 
   return (
     <main className="mx-auto max-w-6xl px-4 py-10 sm:px-6">

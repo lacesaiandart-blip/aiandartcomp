@@ -3,7 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { isDemoMode } from "@/lib/env";
 import { getAdminAccess } from "@/lib/access";
-import { createSignedImageUrl, getAdminSubmissions, getVoteSummaryByAudience } from "@/lib/queries";
+import { createSignedImageUrls, getAdminSubmissions, getVoteSummaryByAudience } from "@/lib/queries";
 import { updateSubmissionStatusAction } from "@/lib/actions";
 
 export default async function AdminPage({
@@ -32,9 +32,8 @@ export default async function AdminPage({
     );
   }
 
-  const submissions = await getAdminSubmissions();
-  const voteSummary = await getVoteSummaryByAudience();
-  const imageUrls = await Promise.all(submissions.map((item) => createSignedImageUrl(item.image_path)));
+  const [submissions, voteSummary] = await Promise.all([getAdminSubmissions(), getVoteSummaryByAudience()]);
+  const imageUrls = await createSignedImageUrls(submissions.map((item) => item.image_path));
 
   const groups = {
     pending: submissions.filter((item) => item.status === "pending"),

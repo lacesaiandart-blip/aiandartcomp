@@ -324,3 +324,30 @@ revoke execute on function public.submission_vote_summary() from public;
 revoke execute on function public.submission_vote_summary() from anon;
 revoke execute on function public.submission_vote_summary() from authenticated;
 grant execute on function public.submission_vote_summary() to service_role;
+
+create index if not exists submissions_status_created_at_idx
+on public.submissions (status, created_at desc);
+
+create index if not exists submissions_user_id_status_idx
+on public.submissions (user_id, status);
+
+create index if not exists submissions_theme_idx
+on public.submissions (theme);
+
+create index if not exists submissions_school_idx
+on public.submissions (school);
+
+create index if not exists votes_user_id_idx
+on public.votes (user_id);
+
+create index if not exists votes_submission_id_idx
+on public.votes (submission_id);
+
+create index if not exists gallery_access_grants_user_id_idx
+on public.gallery_access_grants (user_id);
+
+create index if not exists judge_access_grants_user_id_idx
+on public.judge_access_grants (user_id);
+
+create index if not exists submission_notifications_user_id_created_at_idx
+on public.submission_notifications (user_id, created_at desc);
