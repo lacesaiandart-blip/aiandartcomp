@@ -23,7 +23,7 @@ const ethics = [
   "Avoid prompting in the style of living artists",
   "Avoid copyrighted characters or IP",
   "Look to public domain or self created content",
-  "Use free public AI generative tools"
+  "Use public AI generative tools"
 ];
 
 const prizes = [
@@ -47,7 +47,7 @@ export default function HomePage() {
               Competition
             </h1>
             <p className="mt-6 text-lg leading-8 text-slate-600">
-              Organized by UCLA student groups and local volunteers. Open to high school students. Students choose one theme and use free public AI tools to make original artwork.
+              Organized by UCLA student groups and local volunteers. Open to high school students. Students choose one theme and use public AI tools to make generative artwork.
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <Link href="/submit" className="inline-flex h-12 items-center justify-center rounded-xl bg-primary px-6 text-sm font-semibold text-primary-foreground shadow-[0_10px_24px_rgba(33,99,179,0.22)] transition-all hover:-translate-y-0.5 hover:bg-primary/92">

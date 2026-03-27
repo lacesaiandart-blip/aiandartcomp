@@ -42,10 +42,10 @@ export function SiteShell({ user, children }: SiteShellProps) {
               ) : (
               <>
                 <Link href="/sign-in" className="hidden text-sm font-medium text-slate-500 transition-colors hover:text-slate-900 sm:inline-flex">
-                  Log in
+                  Gallery
                 </Link>
-                <Link href="/gallery/access" className={buttonClassName}>
-                  Access Gallery
+                <Link href="/sign-in" className={buttonClassName}>
+                  Log in
                 </Link>
               </>
             )}
@@ -63,8 +63,11 @@ export function SiteShell({ user, children }: SiteShellProps) {
       </header>
       {children}
       <footer className="border-t border-white/70 bg-white/60">
-        <div className="mx-auto max-w-6xl px-4 py-8 text-sm text-slate-600 sm:px-6">
-          Organized by UCLA student groups and local volunteers
+        <div className="mx-auto flex max-w-6xl flex-col gap-2 px-4 py-8 text-sm text-slate-600 sm:px-6 md:flex-row md:items-center md:justify-between">
+          <p>Organized by UCLA student groups and local volunteers</p>
+          <a href="mailto:laces.ai.and.art@gmail.com" className="transition-colors hover:text-slate-900">
+            laces.ai.and.art@gmail.com
+          </a>
         </div>
       </footer>
     </div>

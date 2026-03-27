@@ -21,7 +21,7 @@ export async function requireUser(next?: string) {
   const user = await getSession();
 
   if (!user) {
-    const destination = next ? `/sign-in?next=${encodeURIComponent(next)}` : "/sign-in";
+    const destination = next ? `/sign-in?next=${encodeURIComponent(next)}&notice=signin` : "/sign-in?notice=signin";
     redirect(destination);
   }
 

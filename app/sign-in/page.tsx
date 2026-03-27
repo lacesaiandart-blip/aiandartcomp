@@ -10,7 +10,7 @@ import { signInWithPasswordAction, signUpWithPasswordAction } from "@/lib/action
 export default async function SignInPage({
   searchParams
 }: {
-  searchParams: { next?: string; error?: string; created?: string; email?: string; mode?: string };
+  searchParams: { next?: string; error?: string; created?: string; email?: string; mode?: string; notice?: string };
 }) {
   const user = await getSession();
   const next = sanitizeNextPath(searchParams.next);
@@ -26,16 +26,15 @@ export default async function SignInPage({
       <div className="grid w-full gap-6 lg:grid-cols-[0.9fr_1.1fr]">
         <Card className="border-stone-300 bg-secondary/35">
           <CardHeader>
-            <CardTitle>Competition access</CardTitle>
+            <CardTitle>Welcome</CardTitle>
             <CardDescription>
-              Use email and password for student submissions, gallery access, judging, and admin tools.
+              Sign in to submit artwork, view the gallery, or enter a judge code.
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4 text-sm leading-6 text-muted-foreground">
-            <p>Returning users can sign in directly with their email and password.</p>
-            <p>New users can create an account on this page. If email confirmation is enabled in Supabase, you&apos;ll verify once and then sign in normally.</p>
-            <p>If an email is on the admin allowlist, that still does not create the login account. You must create the auth account with that same email first.</p>
-            <p>Protected pages still bring you back to the right destination after authentication.</p>
+            <p>Use your email and password to access the competition site.</p>
+            <p>If this is your first time here, create an account with your email.</p>
+            <p>After you sign in, you will return to the page you were trying to open.</p>
           </CardContent>
         </Card>
 
@@ -58,17 +57,22 @@ export default async function SignInPage({
             <CardTitle>{mode === "sign-in" ? "Sign in" : "Create account"}</CardTitle>
             <CardDescription>
               {mode === "sign-in"
-                ? "Use your email and password."
-                : "Create a password-based account for the competition site."}
+                ? "Enter your email and password."
+                : "Create your account to use the competition site."}
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
+          {searchParams.notice === "signin" ? (
+            <p className="rounded-md border border-sky-200 bg-sky-50 px-3 py-2 text-sm text-sky-800">
+              Please sign in first.
+            </p>
+          ) : null}
           {searchParams.error ? (
             <p className="rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">{searchParams.error}</p>
           ) : null}
           {searchParams.created ? (
             <p className="rounded-md border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm text-emerald-700">
-              Account created for {searchParams.email ?? "your email"}. If confirmation is required, check your inbox. Otherwise, sign in now.
+              Account created for {searchParams.email ?? "your email"}. Check your inbox if you need to confirm your email, then sign in.
             </p>
           ) : null}
             {mode === "sign-in" ? (

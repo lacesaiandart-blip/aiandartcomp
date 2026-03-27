@@ -74,7 +74,7 @@ export default async function JudgePage({
                       <p><span className="font-medium text-foreground">AI tools:</span> {submission.ai_tools_used}</p>
                       <div>
                         <p className="font-medium text-foreground">Prompt log</p>
-                        <p>{submission.prompt_log}</p>
+                        <PromptLogPreview promptLog={submission.prompt_log} />
                       </div>
                       <div>
                         <p className="font-medium text-foreground">Creative process statement</p>
@@ -104,5 +104,28 @@ export default async function JudgePage({
         </div>
       )}
     </main>
+  );
+}
+
+function PromptLogPreview({ promptLog }: { promptLog: string }) {
+  const words = promptLog.trim().split(/\s+/).filter(Boolean);
+
+  if (words.length <= 50) {
+    return <p>{promptLog}</p>;
+  }
+
+  const preview = words.slice(0, 50).join(" ");
+  const remainder = words.slice(50).join(" ");
+
+  return (
+    <details className="group text-muted-foreground">
+      <summary className="cursor-pointer list-none marker:hidden">
+        <span>{preview}</span>
+        <span className="group-open:hidden">...</span>
+        <span className="hidden whitespace-pre-wrap group-open:inline"> {remainder}</span>
+        <span className="ml-2 font-medium text-primary group-open:hidden">Expand</span>
+        <span className="ml-2 hidden font-medium text-primary group-open:inline">Hide</span>
+      </summary>
+    </details>
   );
 }
