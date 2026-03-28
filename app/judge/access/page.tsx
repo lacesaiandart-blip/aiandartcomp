@@ -42,7 +42,7 @@ export default async function JudgeAccessPage({
               <form action={grantJudgeAccessAction} className="space-y-5">
                 <div className="space-y-2">
                   <Label htmlFor="code" className="text-sm font-semibold text-slate-900">Judge code</Label>
-                  <Input id="code" name="code" placeholder="JUDGE-A" autoCapitalize="characters" required />
+                  <Input id="code" name="code" placeholder="XXXX-X" autoCapitalize="characters" required />
                 </div>
                 <Button type="submit" className="w-full">
                   Continue to Judging
