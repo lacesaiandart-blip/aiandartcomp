@@ -9,6 +9,16 @@ export type Profile = {
   created_at: string;
 };
 
+export type StudentGalleryCode = {
+  id: string;
+  code: string;
+  active: boolean;
+  created_at: string;
+  redeemed_at: string | null;
+  redeemed: boolean;
+  assignment_type: "reserved" | "fundraiser";
+};
+
 export type Submission = {
   id: string;
   user_id: string;

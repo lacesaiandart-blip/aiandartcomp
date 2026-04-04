@@ -4,7 +4,7 @@ import { isDemoMode } from "@/lib/env";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 import { env } from "@/lib/env";
-import { Submission, SubmissionNotification, VoteSummaryRow } from "@/lib/types";
+import { StudentGalleryCode, Submission, SubmissionNotification, VoteSummaryRow } from "@/lib/types";
 
 export async function getSubmissionCountForUser(userId: string) {
   if (isDemoMode) {
@@ -202,4 +202,113 @@ export async function getUserSubmissionNotifications(userId: string) {
     .order("created_at", { ascending: false });
 
   return (data ?? []) as SubmissionNotification[];
+}
+
+export async function getUserAssignedGalleryCodes(userId: string) {
+  if (isDemoMode) {
+    const count = Number(cookies().get("demo_submission_count")?.value ?? "0");
+
+    if (count === 0) {
+      return [] as StudentGalleryCode[];
+    }
+
+    return Array.from({ length: 11 }, (_, index) => {
+      const assignmentType: StudentGalleryCode["assignment_type"] = index === 0 ? "reserved" : "fundraiser";
+
+      return {
+      id: `demo-gallery-code-${index + 1}`,
+      code: `ART-${String(index + 1).padStart(2, "0")}X-${String(index + 11).padStart(2, "0")}Y`,
+      active: true,
+      created_at: "2026-04-03T00:00:00.000Z",
+      redeemed_at: null,
+      redeemed: false,
+      assignment_type: assignmentType
+    };
+    }) as StudentGalleryCode[];
+  }
+
+  try {
+    const admin = createAdminClient();
+    const { data: assignments, error: assignmentError } = await admin
+      .from("student_gallery_codes")
+      .select("gallery_code_id, created_at, assignment_type")
+      .eq("student_user_id", userId)
+      .order("created_at", { ascending: true });
+
+    if (assignmentError || !assignments || assignments.length === 0) {
+      return [] as StudentGalleryCode[];
+    }
+
+    const codeIds = assignments.map((assignment) => assignment.gallery_code_id as string);
+    const [{ data: codes, error: codeError }, { data: grants, error: grantError }] = await Promise.all([
+      admin.from("gallery_access_codes").select("id, code, active").in("id", codeIds),
+      admin.from("gallery_access_grants").select("gallery_code_id, created_at").in("gallery_code_id", codeIds)
+    ]);
+
+    if (codeError || grantError) {
+      return [] as StudentGalleryCode[];
+    }
+
+    const codeById = new Map((codes ?? []).map((row) => [row.id as string, row]));
+    const grantByCodeId = new Map((grants ?? []).map((row) => [row.gallery_code_id as string, row]));
+
+    return assignments
+      .map((assignment) => {
+        const code = codeById.get(assignment.gallery_code_id as string);
+
+        if (!code) {
+          return null;
+        }
+
+        const grant = grantByCodeId.get(assignment.gallery_code_id as string);
+
+        return {
+          id: code.id as string,
+          code: code.code as string,
+          active: Boolean(code.active),
+          created_at: assignment.created_at as string,
+          redeemed_at: (grant?.created_at as string | undefined) ?? null,
+          redeemed: Boolean(grant),
+          assignment_type: (assignment.assignment_type as "reserved" | "fundraiser" | null) ?? "fundraiser"
+        };
+      })
+      .filter(Boolean) as StudentGalleryCode[];
+  } catch (error) {
+    console.error("Unable to load assigned gallery codes", error);
+    return [] as StudentGalleryCode[];
+  }
+}
+
+export async function getUserRedeemedGalleryCodes(userId: string) {
+  if (isDemoMode) {
+    const redeemedCode = cookies().get("demo_gallery_access")?.value;
+    return redeemedCode ? [redeemedCode] : [];
+  }
+
+  try {
+    const admin = createAdminClient();
+    const { data: grants, error: grantsError } = await admin
+      .from("gallery_access_grants")
+      .select("gallery_code_id")
+      .eq("user_id", userId);
+
+    if (grantsError || !grants || grants.length === 0) {
+      return [] as string[];
+    }
+
+    const codeIds = grants.map((grant) => grant.gallery_code_id as string);
+    const { data: codes, error: codesError } = await admin
+      .from("gallery_access_codes")
+      .select("id, code")
+      .in("id", codeIds);
+
+    if (codesError) {
+      return [] as string[];
+    }
+
+    return (codes ?? []).map((item) => item.code as string);
+  } catch (error) {
+    console.error("Unable to load redeemed gallery codes", error);
+    return [] as string[];
+  }
 }

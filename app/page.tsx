@@ -1,8 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, CheckCircle2 } from "lucide-react";
-
-const themes = ["Future Cities", "Nature", "Community", "Identity"];
+import { THEMES } from "@/lib/constants";
 
 const requirements = [
   "Final artwork in high resolution",
@@ -47,7 +46,7 @@ export default function HomePage() {
               Competition
             </h1>
             <p className="mt-6 text-lg leading-8 text-slate-600">
-              Organized by UCLA student groups and local volunteers. Open to high school students. Students choose one theme and use public AI tools to make generative artwork.
+              Organized by student groups at UCLA and local volunteers. Open to high school students. Students choose one theme and use public AI tools to make generative artwork.
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <Link href="/submit" className="inline-flex h-12 items-center justify-center rounded-xl bg-primary px-6 text-sm font-semibold text-primary-foreground shadow-[0_10px_24px_rgba(33,99,179,0.22)] transition-all hover:-translate-y-0.5 hover:bg-primary/92">
@@ -82,13 +81,13 @@ export default function HomePage() {
       <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
         <div className="grid gap-12 lg:grid-cols-2">
           <div>
-            <p className="section-label">Themes</p>
+            <p className="section-label">AI Art Themes</p>
             <h2 className="mt-4 text-4xl font-semibold tracking-[-0.05em] text-slate-950">Choose one theme</h2>
             <p className="mt-4 max-w-xl text-base leading-7 text-slate-600">
               Each submission should fit one theme.
             </p>
             <div className="mt-8 grid gap-3 sm:grid-cols-2">
-              {themes.map((theme) => (
+              {THEMES.map((theme) => (
                 <div key={theme} className="rounded-[22px] border border-slate-200 bg-white/85 px-5 py-4 text-lg font-medium text-slate-900 shadow-[0_12px_30px_rgba(35,59,92,0.06)]">
                   {theme}
                 </div>

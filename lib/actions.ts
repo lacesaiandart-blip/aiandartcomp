@@ -29,11 +29,22 @@ const passwordSignUpSchema = z
   .object({
     email: z.string().trim().toLowerCase().email("Enter a valid email address."),
     password: z.string().min(8, "Password must be at least 8 characters."),
-    confirm_password: z.string().min(8, "Confirm your password.")
+    confirm_password: z.string().min(8, "Confirm your password."),
+    is_over_18: z.boolean(),
+    guardian_name: z.string().trim().optional(),
+    under_18_acknowledged: z.boolean()
   })
   .refine((data) => data.password === data.confirm_password, {
     path: ["confirm_password"],
     message: "Passwords do not match."
+  })
+  .refine((data) => data.is_over_18 || Boolean(data.guardian_name), {
+    path: ["guardian_name"],
+    message: "Enter a parent or guardian name for participants under 18."
+  })
+  .refine((data) => data.is_over_18 || data.under_18_acknowledged, {
+    path: ["under_18_acknowledged"],
+    message: "Participants under 18 must confirm they understand the rules and have parent or guardian permission."
   });
 
 function mapAuthError(message: string, mode: "sign-in" | "sign-up") {
@@ -76,6 +87,85 @@ function notificationForStatus(artworkTitle: string, status: SubmissionStatus) {
   };
 }
 
+const GALLERY_CODE_ALPHABET = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+const STUDENT_RESERVED_GALLERY_CODES = 1;
+const STUDENT_FUNDRAISER_GALLERY_CODES = 10;
+const STUDENT_GALLERY_PACKET_SIZE = STUDENT_RESERVED_GALLERY_CODES + STUDENT_FUNDRAISER_GALLERY_CODES;
+const RESERVED_ASSIGNMENT_TYPE = "reserved";
+const FUNDRAISER_ASSIGNMENT_TYPE = "fundraiser";
+
+function createGalleryCodeValue() {
+  const nextChunk = (length: number) =>
+    Array.from({ length }, () => GALLERY_CODE_ALPHABET[Math.floor(Math.random() * GALLERY_CODE_ALPHABET.length)]).join("");
+
+  return `ART-${nextChunk(4)}-${nextChunk(4)}`;
+}
+
+async function createStudentGalleryCode(userId: string, assignmentType: "reserved" | "fundraiser") {
+  const admin = createAdminClient();
+  for (let attempt = 0; attempt < 8; attempt += 1) {
+    const code = createGalleryCodeValue();
+    const { data: createdCode, error: createCodeError } = await admin
+      .from("gallery_access_codes")
+      .insert({
+        code,
+        active: true
+      })
+      .select("id")
+      .single();
+
+    if (createCodeError) {
+      if (createCodeError.message.toLowerCase().includes("duplicate")) {
+        continue;
+      }
+
+      throw new Error(`Unable to create gallery code: ${createCodeError.message}`);
+    }
+
+    const { error: assignError } = await admin.from("student_gallery_codes").insert({
+      student_user_id: userId,
+      gallery_code_id: createdCode.id,
+      assignment_type: assignmentType
+    });
+
+    if (assignError) {
+      throw new Error(`Unable to assign gallery code: ${assignError.message}`);
+    }
+
+    return;
+  }
+
+  throw new Error("Unable to generate a unique gallery code after several attempts.");
+}
+
+async function issueStudentGalleryCodes(userId: string, targetPacketSize: number) {
+  const admin = createAdminClient();
+  const { data: assignments, error: assignmentError } = await admin
+    .from("student_gallery_codes")
+    .select("gallery_code_id, assignment_type")
+    .eq("student_user_id", userId);
+
+  if (assignmentError) {
+    throw new Error(`Unable to load student gallery codes: ${assignmentError.message}`);
+  }
+
+  const rows = assignments ?? [];
+  const reservedCount = rows.filter((assignment) => assignment.assignment_type === RESERVED_ASSIGNMENT_TYPE).length;
+  const fundraiserCount = rows.filter((assignment) => assignment.assignment_type === FUNDRAISER_ASSIGNMENT_TYPE).length;
+
+  const reservedNeeded = reservedCount === 0 ? STUDENT_RESERVED_GALLERY_CODES : 0;
+  const fundraiserNeeded =
+    rows.length >= targetPacketSize ? 0 : Math.max(STUDENT_FUNDRAISER_GALLERY_CODES - fundraiserCount, 0);
+
+  for (let index = 0; index < reservedNeeded; index += 1) {
+    await createStudentGalleryCode(userId, RESERVED_ASSIGNMENT_TYPE);
+  }
+
+  for (let index = 0; index < fundraiserNeeded; index += 1) {
+    await createStudentGalleryCode(userId, FUNDRAISER_ASSIGNMENT_TYPE);
+  }
+}
+
 export async function signInWithPasswordAction(formData: FormData) {
   const next = sanitizeNextPath(String(formData.get("next") ?? "/"));
   const parsed = passwordSignInSchema.safeParse({
@@ -109,7 +199,10 @@ export async function signUpWithPasswordAction(formData: FormData) {
   const parsed = passwordSignUpSchema.safeParse({
     email: String(formData.get("email") ?? ""),
     password: String(formData.get("password") ?? ""),
-    confirm_password: String(formData.get("confirm_password") ?? "")
+    confirm_password: String(formData.get("confirm_password") ?? ""),
+    is_over_18: String(formData.get("is_over_18") ?? "") === "true",
+    guardian_name: String(formData.get("guardian_name") ?? ""),
+    under_18_acknowledged: String(formData.get("under_18_acknowledged") ?? "") === "true"
   });
 
   if (!parsed.success) {
@@ -126,7 +219,12 @@ export async function signUpWithPasswordAction(formData: FormData) {
     email: parsed.data.email,
     password: parsed.data.password,
     options: {
-      emailRedirectTo: redirectTo
+      emailRedirectTo: redirectTo,
+      data: {
+        is_over_18: parsed.data.is_over_18,
+        guardian_name: parsed.data.is_over_18 ? null : parsed.data.guardian_name ?? null,
+        under_18_acknowledged: parsed.data.is_over_18 ? null : parsed.data.under_18_acknowledged
+      }
     }
   });
 
@@ -236,17 +334,30 @@ export async function submitArtworkAction(formData: FormData) {
     });
   }
 
+  let packetError = false;
+
+  try {
+    await issueStudentGalleryCodes(user.id, STUDENT_GALLERY_PACKET_SIZE);
+  } catch (error) {
+    packetError = true;
+    console.error("Failed to issue student gallery codes", error);
+  }
+
   revalidatePath("/submit");
-  redirect("/submit?success=1");
+  redirect(packetError ? "/submit?success=1&packet_error=1" : "/submit?success=1");
 }
 
 export async function grantGalleryAccessAction(formData: FormData) {
   const user = await ensureProfile();
   const code = String(formData.get("code") ?? "").trim().toUpperCase();
 
+  if (!code) {
+    redirect("/gallery/access?error=Enter%20a%20gallery%20code.");
+  }
+
   if (isDemoMode) {
     if (code !== DEMO_GALLERY_CODE) {
-      redirect("/gallery/access?error=Invalid gallery access code.");
+      redirect(`/gallery/access?error=${encodeURIComponent("Invalid gallery access code.")}&code=${encodeURIComponent(code)}`);
     }
 
     cookies().set("demo_gallery_access", code, {
@@ -270,16 +381,54 @@ export async function grantGalleryAccessAction(formData: FormData) {
     .maybeSingle();
 
   if (!accessCode) {
-    redirect("/gallery/access?error=Invalid gallery access code.");
+    redirect(`/gallery/access?error=${encodeURIComponent("Invalid gallery access code.")}&code=${encodeURIComponent(code)}`);
   }
 
-  await supabase.from("gallery_access_grants").upsert(
-    {
-      user_id: user.id,
-      gallery_code_id: accessCode.id
-    },
-    { onConflict: "user_id,gallery_code_id" }
-  );
+  const { data: existingGrant } = await admin
+    .from("gallery_access_grants")
+    .select("user_id")
+    .eq("gallery_code_id", accessCode.id)
+    .limit(1)
+    .maybeSingle();
+
+  const { data: studentAssignment } = await admin
+    .from("student_gallery_codes")
+    .select("student_user_id, assignment_type")
+    .eq("gallery_code_id", accessCode.id)
+    .limit(1)
+    .maybeSingle();
+
+  if (
+    studentAssignment?.assignment_type === RESERVED_ASSIGNMENT_TYPE &&
+    studentAssignment.student_user_id !== user.id
+  ) {
+    redirect(`/gallery/access?error=${encodeURIComponent("This code is reserved for the student who submitted.")}&code=${encodeURIComponent(code)}`);
+  }
+
+  if (existingGrant?.user_id === user.id) {
+    redirect("/gallery");
+  }
+
+  if (existingGrant) {
+    redirect(`/gallery/access?error=${encodeURIComponent("This gallery code has already been used.")}&code=${encodeURIComponent(code)}`);
+  }
+
+  const { error } = await admin.from("gallery_access_grants").insert({
+    user_id: user.id,
+    gallery_code_id: accessCode.id
+  });
+
+  if (error) {
+    const lower = error.message.toLowerCase();
+    const message =
+      lower.includes("duplicate") || lower.includes("unique")
+        ? "This gallery code has already been used."
+        : lower.includes("row-level security") || lower.includes("permission")
+          ? "This gallery code could not be redeemed because of a database permission rule."
+          : `Unable to redeem that gallery code right now. ${error.message}`;
+
+    redirect(`/gallery/access?error=${encodeURIComponent(message)}&code=${encodeURIComponent(code)}`);
+  }
 
   redirect("/gallery");
 }

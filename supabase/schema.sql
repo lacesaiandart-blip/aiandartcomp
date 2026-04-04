@@ -32,6 +32,15 @@ create table if not exists public.gallery_access_codes (
   created_at timestamptz not null default now()
 );
 
+create table if not exists public.student_gallery_codes (
+  id uuid primary key default gen_random_uuid(),
+  student_user_id uuid not null references public.profiles(id) on delete cascade,
+  gallery_code_id uuid not null unique references public.gallery_access_codes(id) on delete cascade,
+  assignment_type text not null default 'fundraiser' check (assignment_type in ('reserved', 'fundraiser')),
+  created_at timestamptz not null default now(),
+  unique (student_user_id, gallery_code_id)
+);
+
 create table if not exists public.gallery_access_grants (
   id uuid primary key default gen_random_uuid(),
   user_id uuid not null references public.profiles(id) on delete cascade,
@@ -178,6 +187,7 @@ $$;
 alter table public.profiles enable row level security;
 alter table public.submissions enable row level security;
 alter table public.gallery_access_codes enable row level security;
+alter table public.student_gallery_codes enable row level security;
 alter table public.gallery_access_grants enable row level security;
 alter table public.judge_access_codes enable row level security;
 alter table public.judge_access_grants enable row level security;
@@ -228,6 +238,11 @@ drop policy if exists "gallery codes admin read" on public.gallery_access_codes;
 create policy "gallery codes admin read"
 on public.gallery_access_codes for select
 using (public.is_admin());
+
+drop policy if exists "student gallery codes select self" on public.student_gallery_codes;
+create policy "student gallery codes select self"
+on public.student_gallery_codes for select
+using (auth.uid() = student_user_id or public.is_admin());
 
 drop policy if exists "gallery grants self" on public.gallery_access_grants;
 create policy "gallery grants self"
@@ -343,8 +358,18 @@ on public.votes (user_id);
 create index if not exists votes_submission_id_idx
 on public.votes (submission_id);
 
+create index if not exists student_gallery_codes_student_user_id_idx
+on public.student_gallery_codes (student_user_id);
+
+create unique index if not exists student_gallery_codes_reserved_once_idx
+on public.student_gallery_codes (student_user_id, assignment_type)
+where assignment_type = 'reserved';
+
 create index if not exists gallery_access_grants_user_id_idx
 on public.gallery_access_grants (user_id);
+
+create unique index if not exists gallery_access_grants_gallery_code_id_idx
+on public.gallery_access_grants (gallery_code_id);
 
 create index if not exists judge_access_grants_user_id_idx
 on public.judge_access_grants (user_id);

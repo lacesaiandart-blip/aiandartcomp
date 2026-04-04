@@ -3,6 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { CreateAccountForm } from "@/components/create-account-form";
 import { getSession } from "@/lib/auth";
 import { sanitizeNextPath } from "@/lib/redirects";
 import { signInWithPasswordAction, signUpWithPasswordAction } from "@/lib/actions";
@@ -91,24 +92,11 @@ export default async function SignInPage({
                 </Button>
               </form>
             ) : (
-              <form action={signUpWithPasswordAction} className="space-y-4">
-                <input type="hidden" name="next" value={next} />
-                <div className="space-y-2">
-                  <Label htmlFor="create-email">Email</Label>
-                  <Input id="create-email" name="email" type="email" placeholder="you@example.com" defaultValue={searchParams.email ?? ""} required />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="create-password">Password</Label>
-                  <Input id="create-password" name="password" type="password" placeholder="At least 8 characters" required />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="confirm-password">Confirm password</Label>
-                  <Input id="confirm-password" name="confirm_password" type="password" placeholder="Repeat your password" required />
-                </div>
-                <Button className="w-full" size="lg" type="submit">
-                  Create account
-                </Button>
-              </form>
+              <CreateAccountForm
+                action={signUpWithPasswordAction}
+                defaultEmail={searchParams.email ?? ""}
+                next={next}
+              />
             )}
           </CardContent>
         </Card>

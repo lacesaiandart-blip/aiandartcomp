@@ -1,8 +1,8 @@
 export const THEMES = [
   "Future Cities",
   "Nature",
-  "Community",
-  "Identity"
+  "Steampunk",
+  "Abstract"
 ];
 
 export const MAX_SUBMISSIONS_PER_USER = 2;

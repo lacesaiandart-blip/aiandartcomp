@@ -66,7 +66,6 @@ export default async function GalleryDetailPage({
                   </p>
                 </div>
                 {searchParams.error ? <p className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">{searchParams.error}</p> : null}
-                {searchParams.success === "1" ? <p className="rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700">Marked as one of your top picks.</p> : null}
                 {searchParams.success === "removed" ? <p className="rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-700">Vote removed.</p> : null}
                 <div className="rounded-[24px] bg-slate-50 px-5 py-4">
                   <p className="font-semibold text-slate-900">{remainingVotes} of 3 viewer votes remaining</p>

@@ -25,7 +25,6 @@ export default async function AdminPage({
             <p>
               Signed in as <span className="font-medium text-foreground">{user.email}</span>
             </p>
-            <p>If this email should have admin access, add it to the `admins` table in Supabase and sign in again.</p>
           </CardContent>
         </Card>
       </main>

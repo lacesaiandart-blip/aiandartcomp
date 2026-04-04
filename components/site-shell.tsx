@@ -4,10 +4,11 @@ import { SignOutButton } from "@/components/sign-out-button";
 
 type SiteShellProps = {
   user: User | null;
+  redeemedGalleryCodes?: string[];
   children: React.ReactNode;
 };
 
-export function SiteShell({ user, children }: SiteShellProps) {
+export function SiteShell({ user, redeemedGalleryCodes = [], children }: SiteShellProps) {
   const navItems = [
     { href: "/", label: "Home" },
     { href: "/gallery/access", label: "Gallery" },
@@ -15,6 +16,8 @@ export function SiteShell({ user, children }: SiteShellProps) {
     { href: "/judge/access", label: "Judge Access" },
     { href: "/admin", label: "Admin" }
   ];
+  const displayName = user?.user_metadata.full_name ?? user?.user_metadata.name ?? null;
+  const showSeparateEmail = Boolean(user?.email && displayName && displayName !== user.email);
 
   return (
     <div className="min-h-screen bg-transparent">
@@ -34,8 +37,16 @@ export function SiteShell({ user, children }: SiteShellProps) {
             {user ? (
               <>
                 <div className="hidden text-right text-sm lg:block">
-                  <p className="font-medium text-slate-900">{user.user_metadata.full_name ?? user.email}</p>
-                  <p className="text-slate-500">{user.email}</p>
+                  <p className="font-medium text-slate-900">{displayName ?? user.email}</p>
+                  {showSeparateEmail ? <p className="text-slate-500">{user.email}</p> : null}
+                  {redeemedGalleryCodes.length > 0 ? (
+                    <p className="mt-1 text-xs font-medium uppercase tracking-[0.14em] text-sky-700">
+                      Redeemed code:{" "}
+                      <span className="font-semibold tracking-[0.18em] text-slate-700">
+                        {redeemedGalleryCodes[0]}
+                      </span>
+                    </p>
+                  ) : null}
                 </div>
                 <SignOutButton />
               </>
@@ -64,10 +75,18 @@ export function SiteShell({ user, children }: SiteShellProps) {
       {children}
       <footer className="border-t border-white/70 bg-white/60">
         <div className="mx-auto flex max-w-6xl flex-col gap-2 px-4 py-8 text-sm text-slate-600 sm:px-6 md:flex-row md:items-center md:justify-between">
-          <p>Organized by UCLA student groups and local volunteers</p>
-          <a href="mailto:laces.ai.and.art@gmail.com" className="transition-colors hover:text-slate-900">
-            laces.ai.and.art@gmail.com
-          </a>
+          <p>Organized by student groups at UCLA and local volunteers</p>
+          <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
+            <Link href="/terms" className="transition-colors hover:text-slate-900">
+              Terms
+            </Link>
+            <Link href="/privacy" className="transition-colors hover:text-slate-900">
+              Privacy
+            </Link>
+            <a href="mailto:laces.ai.and.art@gmail.com" className="transition-colors hover:text-slate-900">
+              laces.ai.and.art@gmail.com
+            </a>
+          </div>
         </div>
       </footer>
     </div>

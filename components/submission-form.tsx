@@ -222,7 +222,10 @@ export function SubmissionForm({
               <select
                 id="theme"
                 name="theme"
-                className={inputClass("flex h-12 w-full rounded-xl px-4 text-sm", fieldErrors.theme)}
+                className={inputClass(
+                  "flex h-12 w-full appearance-none rounded-xl bg-white px-4 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+                  fieldErrors.theme
+                )}
                 aria-invalid={Boolean(fieldErrors.theme)}
                 defaultValue=""
                 onChange={() => clearFieldError("theme")}
