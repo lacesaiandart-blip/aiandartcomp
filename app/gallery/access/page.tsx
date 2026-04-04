@@ -32,7 +32,7 @@ export default async function GalleryAccessPage({
           <Card className="p-2">
             <CardHeader>
               <CardTitle>Enter gallery access code</CardTitle>
-              <CardDescription>Use a one-time code shared by a student fundraiser sheet or by the organizers.</CardDescription>
+              <CardDescription>Use a one-time code shared on a student fundraiser strip, given away by a student, or provided by the organizers.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-5">
               {searchParams.error ? <p className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">{searchParams.error}</p> : null}
@@ -60,9 +60,12 @@ export default async function GalleryAccessPage({
               <div className="rounded-2xl border border-slate-200 bg-slate-50/80 px-4 py-4 text-sm leading-6 text-slate-600">
                 <p className="font-medium text-slate-900">How to get a gallery code</p>
                 <p className="mt-2">
-                  Students receive 10 printable one-time gallery codes after they submit artwork. Each code can be sold
-                  for $1 cash and works for one parent or supporter account only. Once a code is redeemed here, it
-                  stays linked to that account.
+                  After a student submits artwork, they receive 11 printable one-time gallery codes: 1 reserved
+                  student code and 10 fundraiser codes. The 10 fundraiser codes can be printed as strips, given away
+                  to friends, family, teachers, or supporters, or sold as fundraisers for $1 cash. When a viewer
+                  signs in and enters one code here, that code unlocks the private online gallery for that account.
+                  Once a code is redeemed, it cannot be reused and stays linked to that viewer account. Please turn in
+                  any funds raised to the LACES front office.
                 </p>
               </div>
               <div className="flex flex-wrap items-center justify-center gap-3 pt-2 text-xs font-medium uppercase tracking-[0.18em] text-slate-500">

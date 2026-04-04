@@ -18,6 +18,15 @@ const rules = [
   "Sensitive themes may be explored if they are handled respectfully with thoughtful artistic intent"
 ];
 
+const galleryCodeRules = [
+  "Each student receives 11 one-time gallery codes after their first submission.",
+  "1 code is reserved for the student who submitted the artwork.",
+  "10 fundraiser codes can be printed as strips and given away to friends, family, teachers, or supporters, or sold for $1 cash each.",
+  "When a viewer signs in and enters a code, it unlocks the private online gallery on that account.",
+  "Please turn in any funds raised to the LACES front office.",
+  "Each code works once and then stays linked to that viewer account."
+];
+
 const ethics = [
   "Avoid prompting in the style of living artists",
   "Avoid copyrighted characters or IP",
@@ -124,10 +133,10 @@ export default function HomePage() {
             </ul>
           </div>
           <div>
-            <p className="section-label">AI art ethics</p>
-            <h2 className="mt-4 text-4xl font-semibold tracking-[-0.05em] text-slate-950">Use AI with care</h2>
+            <p className="section-label">Gallery code rules</p>
+            <h2 className="mt-4 text-4xl font-semibold tracking-[-0.05em] text-slate-950">How gallery codes work</h2>
             <ul className="mt-8 space-y-4">
-              {ethics.map((item) => (
+              {galleryCodeRules.map((item) => (
                 <li key={item} className="flex gap-3 text-sm leading-6 text-slate-600">
                   <CheckCircle2 className="mt-1 h-4 w-4 shrink-0 text-primary" />
                   <span>{item}</span>
@@ -138,6 +147,20 @@ export default function HomePage() {
         </div>
       </section>
 
+      <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
+        <div>
+          <p className="section-label">AI art ethics</p>
+          <h2 className="mt-4 text-4xl font-semibold tracking-[-0.05em] text-slate-950">Use AI with care</h2>
+          <ul className="mt-8 grid gap-4 lg:grid-cols-2">
+            {ethics.map((item) => (
+              <li key={item} className="flex gap-3 text-sm leading-6 text-slate-600">
+                <CheckCircle2 className="mt-1 h-4 w-4 shrink-0 text-primary" />
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
       <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
         <div className="grid gap-12 lg:grid-cols-[0.9fr_1.1fr]">
           <div>
