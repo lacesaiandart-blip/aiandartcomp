@@ -5,6 +5,7 @@ import { THEMES } from "@/lib/constants";
 
 const requirements = [
   "Final artwork in high resolution",
+  "Selected theme or custom theme",
   "Prompt log and base sketches",
   "List of AI tools used",
   "Creative process statement, 50 to 200 words",
@@ -35,9 +36,9 @@ const ethics = [
 ];
 
 const prizes = [
-  "1st place, $150",
-  "2nd place, $100",
-  "3rd place, $50"
+  "1st place, $100",
+  "2nd place, $50",
+  "3rd place, $25"
 ];
 
 export default function HomePage() {
@@ -164,10 +165,10 @@ export default function HomePage() {
       <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
         <div className="grid gap-12 lg:grid-cols-[0.9fr_1.1fr]">
           <div>
-            <p className="section-label">Prizes</p>
-            <h2 className="mt-4 text-4xl font-semibold tracking-[-0.05em] text-slate-950">Cash prizes and a UCLA tour</h2>
+            <p className="section-label">Cash Awards</p>
+            <h2 className="mt-4 text-4xl font-semibold tracking-[-0.05em] text-slate-950">Cash awards and a UCLA campus tour</h2>
             <p className="mt-5 text-base leading-7 text-slate-600">
-              All podium winners will be invited to a UCLA tour after the event. Parking and lunch will be covered.
+              Winners will also be invited to a UCLA campus tour led by UCLA student groups.
             </p>
           </div>
           <div className="grid gap-4 sm:grid-cols-3">

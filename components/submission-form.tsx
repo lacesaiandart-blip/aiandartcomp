@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { submissionSchema } from "@/lib/validation";
-import { MAX_SUBMISSIONS_PER_USER, THEMES } from "@/lib/constants";
+import { CUSTOM_THEME_OPTION, MAX_SUBMISSIONS_PER_USER, THEMES } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import { submitArtworkAction } from "@/lib/actions";
 import { Button } from "@/components/ui/button";
@@ -27,6 +27,7 @@ type FormShape = {
   email: string;
   artwork_title: string;
   theme: string;
+  theme_other: string;
   prompt_log: string;
   ai_tools_used: string;
   creative_process_statement: string;
@@ -38,8 +39,9 @@ const orderedFields: Array<keyof FieldErrors> = [
   "student_name",
   "school",
   "email",
-  "artwork_title",
   "theme",
+  "theme_other",
+  "artwork_title",
   "image",
   "prompt_log",
   "ai_tools_used",
@@ -56,6 +58,7 @@ export function SubmissionForm({
   isDemoMode
 }: SubmissionFormProps) {
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
+  const [theme, setTheme] = useState("");
   const formRef = useRef<HTMLFormElement>(null);
 
   const hasSlots = remaining > 0;
@@ -68,6 +71,7 @@ export function SubmissionForm({
 
     formRef.current.reset();
     setFieldErrors({});
+    setTheme("");
   }, [success]);
 
   const statusNotice = useMemo(() => {
@@ -101,6 +105,7 @@ export function SubmissionForm({
       email: String(formData.get("email") ?? ""),
       artwork_title: String(formData.get("artwork_title") ?? ""),
       theme: String(formData.get("theme") ?? ""),
+      theme_other: String(formData.get("theme_other") ?? ""),
       prompt_log: String(formData.get("prompt_log") ?? ""),
       ai_tools_used: String(formData.get("ai_tools_used") ?? ""),
       creative_process_statement: String(formData.get("creative_process_statement") ?? ""),
@@ -227,8 +232,12 @@ export function SubmissionForm({
                   fieldErrors.theme
                 )}
                 aria-invalid={Boolean(fieldErrors.theme)}
-                defaultValue=""
-                onChange={() => clearFieldError("theme")}
+                value={theme}
+                onChange={(event) => {
+                  setTheme(event.target.value);
+                  clearFieldError("theme");
+                  clearFieldError("theme_other");
+                }}
               >
                 <option value="">Select a theme</option>
                 {THEMES.map((theme) => (
@@ -239,6 +248,22 @@ export function SubmissionForm({
               </select>
               <FieldError message={fieldErrors.theme} />
             </Field>
+
+            {theme === CUSTOM_THEME_OPTION ? (
+              <Field>
+                <Label htmlFor="theme_other" className="field-label">Custom theme</Label>
+                <Input
+                  id="theme_other"
+                  name="theme_other"
+                  placeholder="Type your theme"
+                  className={inputClass(sharedInputClass, fieldErrors.theme_other)}
+                  aria-invalid={Boolean(fieldErrors.theme_other)}
+                  onChange={() => clearFieldError("theme_other")}
+                />
+                <FieldHint>Type the theme you want reviewers to see.</FieldHint>
+                <FieldError message={fieldErrors.theme_other} />
+              </Field>
+            ) : null}
           </div>
         </section>
 

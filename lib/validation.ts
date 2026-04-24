@@ -1,8 +1,10 @@
 import { z } from "zod";
+import { CUSTOM_THEME_OPTION, THEMES } from "@/lib/constants";
 
 const MIN_PROMPT_LOG_LENGTH = 40;
 const MIN_PROCESS_STATEMENT_WORDS = 50;
 const MAX_PROCESS_STATEMENT_WORDS = 200;
+const MAX_CUSTOM_THEME_LENGTH = 60;
 
 function wordCount(value: string) {
   return value.trim().split(/\s+/).filter(Boolean).length;
@@ -25,6 +27,7 @@ export const submissionSchema = z.object({
   email: z.string().trim().email("Enter a valid email address."),
   artwork_title: z.string().trim().min(2, "Enter the artwork title."),
   theme: z.string().trim().min(2, "Choose a theme."),
+  theme_other: z.string().trim().max(MAX_CUSTOM_THEME_LENGTH, `Keep custom theme under ${MAX_CUSTOM_THEME_LENGTH} characters.`).optional(),
   prompt_log: z.string().superRefine((value, ctx) => {
     if (value.trim().length < MIN_PROMPT_LOG_LENGTH) {
       ctx.addIssue({
@@ -62,6 +65,29 @@ export const submissionSchema = z.object({
   integrity_agreed: z.literal("on", {
     errorMap: () => ({ message: "You must agree to the integrity statement." })
   })
-});
+}).superRefine((data, ctx) => {
+  if (!THEMES.includes(data.theme)) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      path: ["theme"],
+      message: "Choose a listed theme, or choose Other and type your theme."
+    });
+  }
+
+  if (data.theme === CUSTOM_THEME_OPTION && !data.theme_other?.trim()) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      path: ["theme_other"],
+      message: "Type the artwork theme."
+    });
+  }
+}).transform((data) => ({
+  ...data,
+  theme:
+    data.theme === CUSTOM_THEME_OPTION
+      ? data.theme_other?.trim() ?? CUSTOM_THEME_OPTION
+      : data.theme,
+  theme_other: data.theme_other?.trim() ?? ""
+}));
 
 export type SubmissionSchemaInput = z.infer<typeof submissionSchema>;
