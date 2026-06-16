@@ -4,8 +4,8 @@
 node_modules
 .env
 .env.local
+*.env
 .vercel
 coverage
 .DS_Store
-sendgrid.env
 *.report.html

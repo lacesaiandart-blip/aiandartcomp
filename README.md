@@ -84,7 +84,6 @@ NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY=your-supabase-anon-or-publishable-k
 SUPABASE_SERVICE_ROLE_KEY=your-supabase-service-role-key
 NEXT_PUBLIC_SITE_URL=http://localhost:3000
 SUPABASE_STORAGE_BUCKET=submissions
-SENDGRID_API_KEY=optional-sendgrid-key
 ```
 
 Notes:
@@ -92,7 +91,6 @@ Notes:
 - `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, and `SUPABASE_SERVICE_ROLE_KEY` come from Supabase.
 - `NEXT_PUBLIC_SITE_URL` should be `http://localhost:3000` locally and your Vercel URL in production.
 - `SUPABASE_STORAGE_BUCKET` should usually stay `submissions`.
-- `SENDGRID_API_KEY` is optional unless the app is extended to send email.
 
 ## Supabase Setup
 
