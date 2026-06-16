@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, CheckCircle2 } from "lucide-react";
+import { eventConfig } from "@/config/event";
 import { THEMES } from "@/lib/constants";
 
 const requirements = [
@@ -21,18 +22,12 @@ const rules = [
   "No political propaganda or charged messaging"
 ];
 
-const judgingCriteria = [
-  "Creativity and viewer votes: 50%",
-  "Effective use of AI tools: 30%",
-  "Process documentation: 20%"
-];
-
 const galleryCodeRules = [
-  "Each student receives 11 one-time gallery codes after their first submission.",
-  "1 code is reserved for the student who submitted the artwork.",
-  "10 fundraiser codes can be printed as strips and given away to friends, family, teachers, or supporters, or sold for $1 cash each.",
+  `Each student receives ${eventConfig.reservedGalleryCodesPerStudent + eventConfig.fundraiserGalleryCodesPerStudent} one-time gallery codes after their first submission.`,
+  `${eventConfig.reservedGalleryCodesPerStudent} code is reserved for the student who submitted the artwork.`,
+  `${eventConfig.fundraiserGalleryCodesPerStudent} fundraiser codes can be printed as strips and given away to friends, family, teachers, or supporters, or sold for ${eventConfig.fundraiserCodePriceLabel} each.`,
   "When a viewer signs in and enters a code, it unlocks the private online gallery on that account.",
-  "Please turn in any funds raised to the organizers.",
+  `Please turn in any funds raised to ${eventConfig.fundsRecipientLabel}.`,
   "Each code works once and then stays linked to that viewer account."
 ];
 
@@ -43,12 +38,6 @@ const ethics = [
   "Use public AI generative tools"
 ];
 
-const prizes = [
-  "1st place, $100",
-  "2nd place, $50",
-  "3rd place, $25"
-];
-
 export default function HomePage() {
   return (
     <main>
@@ -57,14 +46,14 @@ export default function HomePage() {
           <div className="max-w-xl">
             <p className="section-label">Call for entries</p>
             <h1 className="mt-5 text-5xl font-semibold leading-[0.92] tracking-[-0.06em] text-slate-950 sm:text-6xl">
-              High School
+              {eventConfig.heroTitleLines[0]}
               <br />
-              AI Art
+              {eventConfig.heroTitleLines[1]}
               <br />
-              Competition
+              {eventConfig.heroTitleLines[2]}
             </h1>
             <p className="mt-6 text-lg leading-8 text-slate-600">
-              Open to high school students during the entry window. Choose one theme and use public AI tools to create original generative artwork.
+              Open to {eventConfig.audienceLabel} during the {eventConfig.entryWindowLabel.toLowerCase()}. Choose one theme and use public AI tools to create original generative artwork.
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <Link href="/submit" className="inline-flex h-12 items-center justify-center rounded-xl bg-primary px-6 text-sm font-semibold text-primary-foreground shadow-[0_10px_24px_rgba(33,99,179,0.22)] transition-all hover:-translate-y-0.5 hover:bg-primary/92">
@@ -78,8 +67,8 @@ export default function HomePage() {
               Judge Access <ArrowRight className="h-4 w-4" />
             </Link>
             <div className="mt-10 grid gap-3 sm:grid-cols-3">
-              <StatCard label="Entries" value="Up to 2" />
-              <StatCard label="Dates" value="Entry window" />
+              <StatCard label="Entries" value={`Up to ${eventConfig.maxSubmissionsPerUser}`} />
+              <StatCard label="Dates" value={eventConfig.entryWindowLabel} />
               <StatCard label="Access" value="Invite code" />
             </div>
           </div>
@@ -145,10 +134,10 @@ export default function HomePage() {
             <p className="section-label">Judging criteria</p>
             <h2 className="mt-4 text-4xl font-semibold tracking-[-0.05em] text-slate-950">How entries are scored</h2>
             <ul className="mt-8 space-y-4">
-              {judgingCriteria.map((item) => (
-                <li key={item} className="flex gap-3 text-sm leading-6 text-slate-600">
+              {eventConfig.judgingCriteria.map((item) => (
+                <li key={item.label} className="flex gap-3 text-sm leading-6 text-slate-600">
                   <CheckCircle2 className="mt-1 h-4 w-4 shrink-0 text-primary" />
-                  <span>{item}</span>
+                  <span>{item.label}: {item.weight}</span>
                 </li>
               ))}
             </ul>
@@ -191,17 +180,17 @@ export default function HomePage() {
         <div className="grid gap-12 lg:grid-cols-[0.9fr_1.1fr]">
           <div>
             <p className="section-label">Cash Awards</p>
-            <h2 className="mt-4 text-4xl font-semibold tracking-[-0.05em] text-slate-950">Cash awards and a campus tour</h2>
+            <h2 className="mt-4 text-4xl font-semibold tracking-[-0.05em] text-slate-950">Cash awards and {eventConfig.campusTourLabel}</h2>
             <p className="mt-5 text-base leading-7 text-slate-600">
-              Winners may also be invited to a campus tour led by partner student groups.
+              {eventConfig.campusTourDescription}
             </p>
           </div>
           <div className="grid gap-4 sm:grid-cols-3">
-            {prizes.map((item, index) => (
-              <div key={item} className="rounded-[24px] border border-slate-200 bg-white px-5 py-6 shadow-[0_12px_30px_rgba(35,59,92,0.06)]">
-                <p className="section-label">{index === 0 ? "1st" : index === 1 ? "2nd" : "3rd"}</p>
+            {eventConfig.prizes.map((item) => (
+              <div key={item.place} className="rounded-[24px] border border-slate-200 bg-white px-5 py-6 shadow-[0_12px_30px_rgba(35,59,92,0.06)]">
+                <p className="section-label">{item.place}</p>
                 <p className="mt-3 text-2xl font-semibold tracking-[-0.04em] text-slate-950">
-                  {item.split(", ")[1]}
+                  {item.award}
                 </p>
               </div>
             ))}

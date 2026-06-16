@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { LegalPage } from "@/components/legal-page";
+import { eventConfig } from "@/config/event";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy | High School AI Art Competition",
-  description: "Privacy policy for the High School AI Art Competition website and event."
+  title: `Privacy Policy | ${eventConfig.competitionName}`,
+  description: `Privacy policy for the ${eventConfig.competitionName} website and event.`
 };
 
 const updatedOn = "April 3, 2026";
@@ -82,8 +83,8 @@ export default function PrivacyPage() {
               </p>
               <p>
                 If you are a parent, guardian, or participant and have a privacy question, contact{" "}
-                <Link href="mailto:laces.ai.and.art@gmail.com" className="font-medium text-primary hover:underline">
-                  laces.ai.and.art@gmail.com
+                <Link href={`mailto:${eventConfig.contactEmail}`} className="font-medium text-primary hover:underline">
+                  {eventConfig.contactEmail}
                 </Link>
                 .
               </p>

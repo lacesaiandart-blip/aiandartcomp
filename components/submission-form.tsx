@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import { eventConfig } from "@/config/event";
 import { submissionSchema } from "@/lib/validation";
 import { CUSTOM_THEME_OPTION, MAX_SUBMISSIONS_PER_USER, THEMES } from "@/lib/constants";
 import { cn } from "@/lib/utils";
@@ -214,7 +215,7 @@ export function SubmissionForm({
               <Input
                 id="school"
                 name="school"
-                placeholder="Your high school"
+                placeholder={eventConfig.schoolNamePlaceholder}
                 className={inputClass(sharedInputClass, fieldErrors.school)}
                 aria-invalid={Boolean(fieldErrors.school)}
                 onChange={() => clearFieldError("school")}

@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { eventConfig } from "@/config/event";
 import { createSimplePdf } from "@/lib/pdf";
 import { getUserAssignedGalleryCodes } from "@/lib/queries";
 import { createClient } from "@/lib/supabase/server";
@@ -34,11 +35,11 @@ export async function GET() {
 
   const pdf = createSimplePdf([
     "# Gallery access codes",
-    "Student packet with 1 reserved code and 10 fundraiser codes",
+    `Student packet with ${eventConfig.reservedGalleryCodesPerStudent} reserved code and ${eventConfig.fundraiserGalleryCodesPerStudent} fundraiser codes`,
     "",
     "## Instructions",
     "- The first code below is reserved for the student who submitted.",
-    "- Sell each fundraiser code strip for $1 cash.",
+    `- Sell each fundraiser code strip for ${eventConfig.fundraiserCodePriceLabel}.`,
     "- Each code works once for one viewer account.",
     "- Once redeemed, the code stays linked to that account.",
     "",

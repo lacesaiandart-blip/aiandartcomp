@@ -2,6 +2,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
+import { eventConfig } from "@/config/event";
 import { DEMO_GALLERY_CODE } from "@/lib/demo";
 import { ensureProfile } from "@/lib/access";
 import { grantGalleryAccessAction } from "@/lib/actions";
@@ -60,12 +61,12 @@ export default async function GalleryAccessPage({
               <div className="rounded-2xl border border-slate-200 bg-slate-50/80 px-4 py-4 text-sm leading-6 text-slate-600">
                 <p className="font-medium text-slate-900">How to get a gallery code</p>
                 <p className="mt-2">
-                  After a student submits artwork, they receive 11 printable one-time gallery codes: 1 reserved
-                  student code and 10 fundraiser codes. The 10 fundraiser codes can be printed as strips, given away
-                  to friends, family, teachers, or supporters, or sold as fundraisers for $1 cash. When a viewer
+                  After a student submits artwork, they receive {eventConfig.reservedGalleryCodesPerStudent + eventConfig.fundraiserGalleryCodesPerStudent} printable one-time gallery codes: {eventConfig.reservedGalleryCodesPerStudent} reserved
+                  student code and {eventConfig.fundraiserGalleryCodesPerStudent} fundraiser codes. The fundraiser codes can be printed as strips, given away
+                  to friends, family, teachers, or supporters, or sold as fundraisers for {eventConfig.fundraiserCodePriceLabel}. When a viewer
                   signs in and enters one code here, that code unlocks the private online gallery for that account.
                   Once a code is redeemed, it cannot be reused and stays linked to that viewer account. Please turn in
-                  any funds raised to the organizers.
+                  any funds raised to {eventConfig.fundsRecipientLabel}.
                 </p>
               </div>
               <div className="flex flex-wrap items-center justify-center gap-3 pt-2 text-xs font-medium uppercase tracking-[0.18em] text-slate-500">

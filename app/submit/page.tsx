@@ -1,6 +1,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { PrintPageButton } from "@/components/print-page-button";
 import { SubmissionForm } from "@/components/submission-form";
+import { eventConfig } from "@/config/event";
 import { ensureProfile } from "@/lib/access";
 import { MAX_SUBMISSIONS_PER_USER } from "@/lib/constants";
 import { isDemoMode } from "@/lib/env";
@@ -59,7 +60,7 @@ export default async function SubmitPage({
             ) : null}
             {hasFreshPacket ? (
               <StatusBanner tone="success">
-                Submission received. Your reserved student code and 10 fundraiser codes are ready below.
+                Submission received. Your reserved student code and {eventConfig.fundraiserGalleryCodesPerStudent} fundraiser codes are ready below.
               </StatusBanner>
             ) : null}
             <SubmissionForm
@@ -228,30 +229,30 @@ function GalleryCodePacketCard({
       <CardHeader>
         <CardTitle>Gallery fundraiser codes</CardTitle>
         <CardDescription>
-          After a student submits, this page prepares 11 one-time gallery codes: 1 reserved for the student and 10 fundraiser codes they can print and sell for $1 cash each.
+          After a student submits, this page prepares {eventConfig.reservedGalleryCodesPerStudent + eventConfig.fundraiserGalleryCodesPerStudent} one-time gallery codes: {eventConfig.reservedGalleryCodesPerStudent} reserved for the student and {eventConfig.fundraiserGalleryCodesPerStudent} fundraiser codes they can print and sell for {eventConfig.fundraiserCodePriceLabel} each.
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-5 text-sm leading-6 text-muted-foreground">
         <div className="rounded-[24px] border border-amber-100 bg-amber-50/70 px-4 py-4">
           <p className="font-medium text-slate-900">How it works</p>
           <p className="mt-2">
-            Submit at least one artwork, keep the reserved student code for the student who entered, and print the 10
-            fundraiser codes below as strips. These can be given away or sold as fundraisers for $1 cash. Please turn
-            in any funds raised to the organizers. A viewer signs in, enters one code, and that code becomes linked
-            to their gallery account.
+            Submit at least one artwork, keep the reserved student code for the student who entered, and print the
+            fundraiser codes below as strips. These can be given away or sold as fundraisers for{" "}
+            {eventConfig.fundraiserCodePriceLabel}. Please turn in any funds raised to {eventConfig.fundsRecipientLabel}.
+            A viewer signs in, enters one code, and that code becomes linked to their gallery account.
           </p>
         </div>
 
         {!hasSubmission ? (
           <p>
             Submit your artwork first. Once your first submission is received, this page will generate your student
-            packet of 11 one-time gallery codes.
+            packet of {eventConfig.reservedGalleryCodesPerStudent + eventConfig.fundraiserGalleryCodesPerStudent} one-time gallery codes.
           </p>
         ) : (
           <>
             <div className="flex flex-wrap items-center gap-3">
               <span className="rounded-full bg-sky-100 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-sky-800">
-                1 reserved student code
+                {eventConfig.reservedGalleryCodesPerStudent} reserved student code
               </span>
               <span className="rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-emerald-800">
                 {availableCodes.length} ready to sell

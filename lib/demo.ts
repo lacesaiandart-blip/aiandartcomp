@@ -1,4 +1,5 @@
 import type { User } from "@supabase/supabase-js";
+import { eventConfig } from "@/config/event";
 import type { Submission, SubmissionNotification, VoteSummaryRow } from "@/lib/types";
 
 export const DEMO_GALLERY_CODE = "SPRING24";
@@ -6,7 +7,7 @@ export const DEMO_JUDGE_CODE = "JUDGE-A";
 
 export const demoUser = {
   id: "00000000-0000-0000-0000-000000000001",
-  email: "demo.student@ucla.edu",
+  email: "demo.student@example.edu",
   user_metadata: {
     full_name: "Demo Student",
     name: "Demo Student"
@@ -155,7 +156,7 @@ export const demoSubmissionNotifications: SubmissionNotification[] = [
     artwork_title: "Quiet Signals",
     kind: "rejected",
     message_title: "Submission not accepted",
-    message_body: "\"Quiet Signals\" was not accepted for the competition. Review the rules and contact the organizers if you need clarification.",
+    message_body: `"Quiet Signals" was not accepted for the competition. Review the rules and contact ${eventConfig.organizersLabel} if you need clarification.`,
     created_at: "2024-04-16T10:00:00.000Z"
   }
 ];

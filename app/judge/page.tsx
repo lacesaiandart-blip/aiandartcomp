@@ -1,5 +1,6 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { eventConfig } from "@/config/event";
 import { isDemoMode } from "@/lib/env";
 import { createSignedImageUrls, getApprovedSubmissions, getUserVoteSubmissionIds } from "@/lib/queries";
 import { requireJudgeAccess } from "@/lib/access";
@@ -25,8 +26,8 @@ export default async function JudgePage({
     <main className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
       <div className="mb-8">
         <h1 className="text-3xl font-semibold tracking-tight">Judge voting</h1>
-        <p className="mt-2 text-muted-foreground">Each signed-in judge can cast up to 3 top-pick votes.</p>
-        <p className="mt-1 text-sm text-foreground/80">{remainingVotes} of 3 judge votes remaining.</p>
+        <p className="mt-2 text-muted-foreground">Each signed-in judge can cast up to {eventConfig.maxVotesPerUser} top-pick votes.</p>
+        <p className="mt-1 text-sm text-foreground/80">{remainingVotes} of {eventConfig.maxVotesPerUser} judge votes remaining.</p>
       </div>
       {isDemoMode ? (
         <p className="mb-4 rounded-md border bg-secondary/50 px-3 py-2 text-sm text-muted-foreground">

@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 import { z } from "zod";
+import { eventConfig } from "@/config/event";
 import { DEMO_GALLERY_CODE, DEMO_JUDGE_CODE, demoSubmissions } from "@/lib/demo";
 import { env } from "@/lib/env";
 import { isDemoMode } from "@/lib/env";
@@ -76,7 +77,7 @@ function notificationForStatus(artworkTitle: string, status: SubmissionStatus) {
     return {
       kind: "rejected" as const,
       message_title: "Submission not accepted",
-      message_body: `"${artworkTitle}" was not accepted for the competition. Review the rules and contact the organizers if you need clarification.`
+      message_body: `"${artworkTitle}" was not accepted for the competition. Review the rules and contact ${eventConfig.organizersLabel} if you need clarification.`
     };
   }
 
@@ -500,7 +501,7 @@ export async function submitVoteAction(formData: FormData) {
     }
 
     if (votedIds.size >= MAX_VOTES_PER_USER) {
-      redirect(`${destination}?error=You have already used all 3 votes.`);
+      redirect(`${destination}?error=You have already used all ${MAX_VOTES_PER_USER} votes.`);
     }
 
     const approvedSubmissionIds = new Set(
@@ -546,7 +547,7 @@ export async function submitVoteAction(formData: FormData) {
     .eq("user_id", user.id);
 
   if ((count ?? 0) >= MAX_VOTES_PER_USER) {
-    redirect(`${destination}?error=You have already used all 3 votes.`);
+    redirect(`${destination}?error=You have already used all ${MAX_VOTES_PER_USER} votes.`);
   }
 
   const { error } = await supabase.from("votes").insert({

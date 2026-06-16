@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
 import { SiteShell } from "@/components/site-shell";
+import { eventConfig } from "@/config/event";
 import { getSession } from "@/lib/auth";
 import { isDemoMode } from "@/lib/env";
 import { getUserRedeemedGalleryCodes } from "@/lib/queries";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "High School AI Art Competition",
-  description: "An AI art competition for high school students."
+  title: eventConfig.competitionName,
+  description: `An AI art competition for ${eventConfig.audienceLabel}.`
 };
 
 export default async function RootLayout({

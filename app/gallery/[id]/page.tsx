@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { eventConfig } from "@/config/event";
 import { getSession } from "@/lib/auth";
 import { requireGalleryAccess } from "@/lib/access";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -68,8 +69,8 @@ export default async function GalleryDetailPage({
                 {searchParams.error ? <p className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">{searchParams.error}</p> : null}
                 {searchParams.success === "removed" ? <p className="rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-700">Vote removed.</p> : null}
                 <div className="rounded-[24px] bg-slate-50 px-5 py-4">
-                  <p className="font-semibold text-slate-900">{remainingVotes} of 3 viewer votes remaining</p>
-                  <p className="mt-1 text-sm text-slate-600">Use votes on the works you want as your top picks. You can support up to three different submissions.</p>
+                  <p className="font-semibold text-slate-900">{remainingVotes} of {eventConfig.maxVotesPerUser} viewer votes remaining</p>
+                  <p className="mt-1 text-sm text-slate-600">Use votes on the works you want as your top picks. You can support up to {eventConfig.maxVotesPerUser} different submissions.</p>
                 </div>
                 <div>
                   <p className="section-label">Prompt log</p>

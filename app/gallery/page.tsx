@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { eventConfig } from "@/config/event";
 import { requireGalleryAccess } from "@/lib/access";
 import { createSignedImageUrls, getApprovedSubmissions, getUserVoteSubmissionIds } from "@/lib/queries";
 import { Card, CardContent } from "@/components/ui/card";
@@ -36,7 +37,7 @@ export default async function GalleryPage({
               Browse approved entries and mark up to three pieces as your top picks. Gallery voting is tied to your signed-in account and access code.
             </p>
             <div className="mt-5 inline-flex rounded-full bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow-[0_12px_30px_rgba(35,59,92,0.08)]">
-              {remainingVotes} of 3 viewer votes remaining
+              {remainingVotes} of {eventConfig.maxVotesPerUser} viewer votes remaining
             </div>
           </div>
           <form className="surface-card grid gap-3 p-4 sm:grid-cols-[1fr_1fr_auto]">

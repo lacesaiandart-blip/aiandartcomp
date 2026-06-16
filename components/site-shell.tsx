@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { User } from "@supabase/supabase-js";
 import { SignOutButton } from "@/components/sign-out-button";
+import { eventConfig } from "@/config/event";
 
 type SiteShellProps = {
   user: User | null;
@@ -24,7 +25,7 @@ export function SiteShell({ user, redeemedGalleryCodes = [], children }: SiteShe
       <header className="sticky top-0 z-40 border-b border-white/70 bg-white/88 backdrop-blur">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-5 sm:px-6">
           <Link href="/" className="text-[1.85rem] font-semibold tracking-[-0.04em] text-slate-900">
-            AI Art Competition
+            {eventConfig.siteTitle}
           </Link>
           <nav className="hidden items-center gap-8 text-sm font-medium text-slate-500 md:flex">
             {navItems.map((item) => (
@@ -75,7 +76,7 @@ export function SiteShell({ user, redeemedGalleryCodes = [], children }: SiteShe
       {children}
       <footer className="border-t border-white/70 bg-white/60">
         <div className="mx-auto flex max-w-6xl flex-col gap-2 px-4 py-8 text-sm text-slate-600 sm:px-6 md:flex-row md:items-center md:justify-between">
-          <p>High School AI Art Competition</p>
+          <p>{eventConfig.competitionName}</p>
           <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
             <Link href="/terms" className="transition-colors hover:text-slate-900">
               Terms
@@ -83,8 +84,8 @@ export function SiteShell({ user, redeemedGalleryCodes = [], children }: SiteShe
             <Link href="/privacy" className="transition-colors hover:text-slate-900">
               Privacy
             </Link>
-            <a href="mailto:laces.ai.and.art@gmail.com" className="transition-colors hover:text-slate-900">
-              laces.ai.and.art@gmail.com
+            <a href={`mailto:${eventConfig.contactEmail}`} className="transition-colors hover:text-slate-900">
+              {eventConfig.contactEmail}
             </a>
           </div>
         </div>

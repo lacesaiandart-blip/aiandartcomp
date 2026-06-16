@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import { LegalPage } from "@/components/legal-page";
+import { eventConfig } from "@/config/event";
 
 export const metadata: Metadata = {
-  title: "Terms of Use | High School AI Art Competition",
-  description: "Terms of use for the High School AI Art Competition website and event."
+  title: `Terms of Use | ${eventConfig.competitionName}`,
+  description: `Terms of use for the ${eventConfig.competitionName} website and event.`
 };
 
 const updatedOn = "April 3, 2026";
@@ -17,7 +18,7 @@ export default function TermsPage() {
       intro={
         <>
           <p>
-            This site is operated by competition organizers and volunteers for an educational art event. By using the
+            This site is operated by {eventConfig.organizersLabel} and volunteers for an educational art event. By using the
             site or submitting artwork, you agree to these terms.
           </p>
         </>
@@ -75,7 +76,7 @@ export default function TermsPage() {
             <>
               <p>
                 Participation is voluntary and at your own risk. To the fullest extent permitted by law, you release
-                and hold harmless the organizers, volunteers, sponsors, affiliates, and related representatives from
+                and hold harmless {eventConfig.organizersLabel}, volunteers, sponsors, affiliates, and related representatives from
                 claims, losses, damages, liabilities, costs, and expenses arising out of or related to the site, the
                 competition, submissions, judging, prizes, technical failures, third-party services, or reliance on any
                 site content.
