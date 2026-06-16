@@ -11,8 +11,7 @@ Create or get access to these accounts:
 - GitHub, to store the website code
 - Supabase, to store accounts, submissions, votes, access codes, and images
 - Vercel, to host the live website
-- Twilio SendGrid, optional but recommended for production sign-in emails
-- Twilio Programmable Messaging, optional and only needed if a future version adds SMS
+- Twilio SendGrid, for production account confirmation and password emails through Supabase Auth
 
 Install these on your computer:
 
@@ -146,9 +145,19 @@ In Supabase:
 
 1. Open **SQL Editor**.
 2. Open [`supabase/schema.sql`](supabase/schema.sql) in this project.
-3. Copy the whole file.
+3. Copy the whole file. This is the one schema file to paste into Supabase.
 4. Paste it into Supabase SQL Editor.
 5. Click **Run**.
+
+On a Mac, you can copy the schema file from Terminal:
+
+```bash
+pbcopy < supabase/schema.sql
+```
+
+Then paste it into Supabase SQL Editor and click **Run**.
+
+Do not paste `.env.local`, `.env.example`, or `supabase/seed.sql` into the SQL Editor. Only paste [`supabase/schema.sql`](supabase/schema.sql) unless you intentionally want to add sample seed data later.
 
 Then create the private upload bucket:
 
@@ -174,9 +183,9 @@ http://localhost:3000/auth/callback
 
 ## 9. Set Up Production Email With Twilio SendGrid SMTP
 
-Supabase sends account confirmation and password emails. The default Supabase email server is only for testing. For a real public competition, set up custom SMTP before launch so students can receive sign-in emails reliably.
+Supabase sends account confirmation and password reset emails. The default Supabase email server is only for testing. For a real public competition, set up custom SMTP before launch so students can receive account emails reliably.
 
-This app does not currently send custom SendGrid emails itself. SendGrid is used by Supabase Auth through SMTP.
+This app does not send custom SendGrid emails itself. SendGrid is only used by Supabase Auth through SMTP for account confirmation and password emails.
 
 ### Create SendGrid SMTP Credentials
 
@@ -209,33 +218,15 @@ In Supabase:
 
 If emails do not arrive, check SendGrid activity, sender verification, and the Supabase Auth logs.
 
-### Optional Email Templates
+These SendGrid SMTP values do not go in `.env.local` or Vercel. Supabase stores and uses them.
+
+### Optional Supabase Email Templates
 
 In Supabase, open **Authentication** > **Email Templates**.
 
 Review the confirmation, invite, magic link, and password reset templates. Keep them short and functional. Avoid marketing copy in authentication emails because it can hurt deliverability.
 
-## 10. Optional Twilio SMS Setup
-
-The current website does not send SMS messages. You do not need Twilio SMS for the site to work.
-
-Only do this if a future organizer adds SMS notifications or phone verification:
-
-1. Create a Twilio account.
-2. Buy or verify an SMS-capable phone number.
-3. Copy the Account SID and Auth Token from the Twilio Console.
-4. Store them as secrets, not in Git.
-5. Add these variables in Vercel only after the code actually uses SMS:
-
-| Name | Value |
-| --- | --- |
-| `TWILIO_ACCOUNT_SID` | Twilio Account SID |
-| `TWILIO_AUTH_TOKEN` | Twilio Auth Token |
-| `TWILIO_PHONE_NUMBER` | Twilio sender phone number in E.164 format, such as `+15551234567` |
-
-For United States SMS, review Twilio registration requirements before sending messages to real users.
-
-## 11. Run The Real Site Locally
+## 10. Run The Real Site Locally
 
 Start the site:
 
@@ -251,7 +242,7 @@ http://localhost:3000
 
 Create a test account on the site. This confirms Supabase Auth is connected.
 
-## 12. Make Yourself An Admin
+## 11. Make Yourself An Admin
 
 After your test account exists, open **Supabase** > **SQL Editor** and run this. Replace the email with your account email.
 
@@ -267,7 +258,7 @@ Now open:
 http://localhost:3000/admin
 ```
 
-## 13. Create Judge Codes
+## 12. Create Judge Codes
 
 Judges need accounts and judge codes.
 
@@ -283,7 +274,7 @@ on conflict (code) do update set active = true;
 
 Give each judge one code. Judges sign in, open `/judge/access`, enter the code, and then vote in `/judge`.
 
-## 14. Test The Main Flows
+## 13. Test The Main Flows
 
 Run these checks before deploying:
 
@@ -308,7 +299,7 @@ Click through:
 - Judge access
 - Voting
 
-## 15. Push Your Changes To GitHub
+## 14. Push Your Changes To GitHub
 
 Use these commands after editing `config/event.ts` and any other setup files:
 
@@ -321,7 +312,7 @@ git push
 
 If you changed other files, add them too.
 
-## 16. Create The Vercel Site
+## 15. Create The Vercel Site
 
 1. Go to [vercel.com](https://vercel.com/).
 2. Click **Add New** > **Project**.
@@ -341,7 +332,7 @@ Add these Vercel environment variables:
 | `NEXT_PUBLIC_SITE_URL` | Your Vercel site URL, such as `https://your-site.vercel.app` |
 | `SUPABASE_STORAGE_BUCKET` | `submissions` |
 
-Do not add SendGrid SMTP values to Vercel for the current app. Supabase stores and uses those SMTP settings for Auth emails. Add Twilio SMS variables to Vercel only if the codebase is extended to send SMS.
+Do not add SendGrid SMTP values to Vercel for the current app. Supabase stores and uses those SMTP settings for Auth emails.
 
 Set each variable for **Production**, **Preview**, and **Development** unless your team has a reason to separate them.
 
@@ -349,7 +340,7 @@ Click **Deploy**.
 
 If you do not know the Vercel URL until after the first deploy, set `NEXT_PUBLIC_SITE_URL` to the temporary Vercel URL after deploy and redeploy once.
 
-## 17. Add The Vercel Auth Redirect In Supabase
+## 16. Add The Vercel Auth Redirect In Supabase
 
 After Vercel gives you a live URL, go back to Supabase:
 
@@ -368,7 +359,7 @@ https://your-custom-domain.org/auth/callback
 
 Save, then redeploy in Vercel if you changed `NEXT_PUBLIC_SITE_URL`.
 
-## 18. Final Launch Checklist
+## 17. Final Launch Checklist
 
 Before sharing the site:
 
