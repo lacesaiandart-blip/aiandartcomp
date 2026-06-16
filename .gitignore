@@ -1,4 +1,6 @@
 .next
+.next-*
+*.tsbuildinfo
 node_modules
 .env
 .env.local
@@ -6,3 +8,4 @@ node_modules
 coverage
 .DS_Store
 sendgrid.env
+*.report.html
