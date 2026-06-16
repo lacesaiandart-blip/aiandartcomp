@@ -33,7 +33,7 @@ export default async function GalleryPage({
             <p className="section-label">Competition gallery</p>
             <h1 className="mt-4 text-5xl font-semibold tracking-[-0.06em] text-slate-950">Approved student work</h1>
             <p className="mt-4 max-w-2xl text-base leading-7 text-slate-600">
-              Browse approved entries and mark up to three pieces as your top picks. Gallery voting is tied to your signed-in account and access grant.
+              Browse approved entries and mark up to three pieces as your top picks. Gallery voting is tied to your signed-in account and access code.
             </p>
             <div className="mt-5 inline-flex rounded-full bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow-[0_12px_30px_rgba(35,59,92,0.08)]">
               {remainingVotes} of 3 viewer votes remaining

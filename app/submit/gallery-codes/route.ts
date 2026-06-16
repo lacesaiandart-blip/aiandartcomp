@@ -39,7 +39,7 @@ export async function GET() {
     "## Instructions",
     "- The first code below is reserved for the student who submitted.",
     "- Sell each fundraiser code strip for $1 cash.",
-    "- Each code works once for one parent or supporter account.",
+    "- Each code works once for one viewer account.",
     "- Once redeemed, the code stays linked to that account.",
     "",
     "## Reserved student code",

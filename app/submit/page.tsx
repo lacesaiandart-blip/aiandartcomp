@@ -237,8 +237,8 @@ function GalleryCodePacketCard({
           <p className="mt-2">
             Submit at least one artwork, keep the reserved student code for the student who entered, and print the 10
             fundraiser codes below as strips. These can be given away or sold as fundraisers for $1 cash. Please turn
-            in any funds raised to the organizers. A viewer signs in, enters one code, and that code becomes
-            permanently tied to their gallery account.
+            in any funds raised to the organizers. A viewer signs in, enters one code, and that code becomes linked
+            to their gallery account.
           </p>
         </div>
 

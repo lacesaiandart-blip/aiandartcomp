@@ -25,7 +25,7 @@ export default async function JudgePage({
     <main className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
       <div className="mb-8">
         <h1 className="text-3xl font-semibold tracking-tight">Judge voting</h1>
-        <p className="mt-2 text-muted-foreground">Each signed-in judge can cast up to 3 votes total for the submissions they want as top picks.</p>
+        <p className="mt-2 text-muted-foreground">Each signed-in judge can cast up to 3 top-pick votes.</p>
         <p className="mt-1 text-sm text-foreground/80">{remainingVotes} of 3 judge votes remaining.</p>
       </div>
       {isDemoMode ? (
@@ -64,7 +64,7 @@ export default async function JudgePage({
                     ) : null}
                     {alreadyVoted ? (
                       <div className="absolute left-3 top-3 rounded-full bg-amber-500 px-3 py-1 text-xs font-medium uppercase tracking-[0.14em] text-white">
-                        Best pick
+                        Top pick
                       </div>
                     ) : null}
                   </div>
