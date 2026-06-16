@@ -6,17 +6,25 @@ import { THEMES } from "@/lib/constants";
 const requirements = [
   "Final artwork in high resolution",
   "Selected theme or custom theme",
-  "Prompt log and base sketches",
+  "Prompt log with key prompts, revisions, and edits",
   "List of AI tools used",
   "Creative process statement, 50 to 200 words",
   "Signed academic and ethical integrity agreement"
 ];
 
 const rules = [
-  "No hate speech, discriminatory imagery, or harassment",
+  "Submit your own original work created with public AI tools",
+  "Complete every submission requirement",
+  "Avoid imitating living artists or using copyrighted characters, brands, or IP",
+  "No hate speech, discrimination, or harassment",
   "No explicit sexual content, nudity, or graphic violence",
-  "No political propaganda or charged messaging",
-  "Sensitive themes may be explored if they are handled respectfully with thoughtful artistic intent"
+  "No political propaganda or charged messaging"
+];
+
+const judgingCriteria = [
+  "Creativity and viewer votes: 50%",
+  "Effective use of AI tools: 30%",
+  "Process documentation: 20%"
 ];
 
 const galleryCodeRules = [
@@ -31,7 +39,7 @@ const galleryCodeRules = [
 const ethics = [
   "Avoid prompting in the style of living artists",
   "Avoid copyrighted characters or IP",
-  "Look to public domain or self created content",
+  "Use public domain or self-created references",
   "Use public AI generative tools"
 ];
 
@@ -56,7 +64,7 @@ export default function HomePage() {
               Competition
             </h1>
             <p className="mt-6 text-lg leading-8 text-slate-600">
-              Organized by student groups at UCLA and local volunteers. Open to high school students. Students choose one theme and use public AI tools to make generative artwork.
+              Open to all LACES students from May 4-18. Choose one theme and use public AI tools to create original generative artwork.
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <Link href="/submit" className="inline-flex h-12 items-center justify-center rounded-xl bg-primary px-6 text-sm font-semibold text-primary-foreground shadow-[0_10px_24px_rgba(33,99,179,0.22)] transition-all hover:-translate-y-0.5 hover:bg-primary/92">
@@ -71,7 +79,7 @@ export default function HomePage() {
             </Link>
             <div className="mt-10 grid gap-3 sm:grid-cols-3">
               <StatCard label="Entries" value="Up to 2" />
-              <StatCard label="Review" value="24-48 hrs" />
+              <StatCard label="Dates" value="May 4-18" />
               <StatCard label="Access" value="Invite code" />
             </div>
           </div>
@@ -123,7 +131,7 @@ export default function HomePage() {
         <div className="mx-auto grid max-w-6xl gap-12 px-4 py-16 sm:px-6 lg:grid-cols-2">
           <div>
             <p className="section-label">Rules</p>
-            <h2 className="mt-4 text-4xl font-semibold tracking-[-0.05em] text-slate-950">Keep it respectful</h2>
+            <h2 className="mt-4 text-4xl font-semibold tracking-[-0.05em] text-slate-950">Keep it original and respectful</h2>
             <ul className="mt-8 space-y-4">
               {rules.map((item) => (
                 <li key={item} className="flex gap-3 text-sm leading-6 text-slate-600">
@@ -134,10 +142,10 @@ export default function HomePage() {
             </ul>
           </div>
           <div>
-            <p className="section-label">Gallery code rules</p>
-            <h2 className="mt-4 text-4xl font-semibold tracking-[-0.05em] text-slate-950">How gallery codes work</h2>
+            <p className="section-label">Judging criteria</p>
+            <h2 className="mt-4 text-4xl font-semibold tracking-[-0.05em] text-slate-950">How entries are scored</h2>
             <ul className="mt-8 space-y-4">
-              {galleryCodeRules.map((item) => (
+              {judgingCriteria.map((item) => (
                 <li key={item} className="flex gap-3 text-sm leading-6 text-slate-600">
                   <CheckCircle2 className="mt-1 h-4 w-4 shrink-0 text-primary" />
                   <span>{item}</span>
@@ -150,6 +158,22 @@ export default function HomePage() {
 
       <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
         <div>
+          <p className="section-label">Gallery code rules</p>
+          <h2 className="mt-4 text-4xl font-semibold tracking-[-0.05em] text-slate-950">How gallery codes work</h2>
+          <ul className="mt-8 grid gap-4 lg:grid-cols-2">
+            {galleryCodeRules.map((item) => (
+              <li key={item} className="flex gap-3 text-sm leading-6 text-slate-600">
+                <CheckCircle2 className="mt-1 h-4 w-4 shrink-0 text-primary" />
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      <section className="border-y border-white/70 bg-white/45">
+        <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
+        <div>
           <p className="section-label">AI art ethics</p>
           <h2 className="mt-4 text-4xl font-semibold tracking-[-0.05em] text-slate-950">Use AI with care</h2>
           <ul className="mt-8 grid gap-4 lg:grid-cols-2">
@@ -160,6 +184,7 @@ export default function HomePage() {
               </li>
             ))}
           </ul>
+        </div>
         </div>
       </section>
       <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6">

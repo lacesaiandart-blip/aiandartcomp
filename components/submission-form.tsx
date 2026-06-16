@@ -319,16 +319,16 @@ export function SubmissionForm({
             </Field>
 
             <Field>
-              <Label htmlFor="prompt_log" className="field-label">Prompt log and base sketches</Label>
+              <Label htmlFor="prompt_log" className="field-label">Prompt log</Label>
               <Textarea
                 id="prompt_log"
                 name="prompt_log"
-                placeholder="List the prompts, base sketches, revisions, and edits you used."
+                placeholder="List the prompts, revisions, and edits you used."
                 className={inputClass(sharedInputClass, fieldErrors.prompt_log)}
                 aria-invalid={Boolean(fieldErrors.prompt_log)}
                 onChange={() => clearFieldError("prompt_log")}
               />
-              <FieldHint>Include the main prompts, any base sketches, what changed between versions, and any edits you made after generation.</FieldHint>
+              <FieldHint>Include key prompts, what changed between versions, and any edits you made after generation.</FieldHint>
               <FieldError message={fieldErrors.prompt_log} />
             </Field>
 
@@ -337,12 +337,12 @@ export function SubmissionForm({
               <Textarea
                 id="creative_process_statement"
                 name="creative_process_statement"
-                placeholder="Explain your idea, what you changed, and how you shaped the final image."
+                placeholder="Explain your idea, how you used AI, and the artistic decisions you made."
                 className={inputClass(sharedInputClass, fieldErrors.creative_process_statement)}
                 aria-invalid={Boolean(fieldErrors.creative_process_statement)}
                 onChange={() => clearFieldError("creative_process_statement")}
               />
-              <FieldHint>Write 50 to 200 words. Explain the idea, which outputs you kept or rejected, and what made the final version yours.</FieldHint>
+              <FieldHint>Write 50 to 200 words about your idea, AI use, and artistic decisions through iterations.</FieldHint>
               <FieldError message={fieldErrors.creative_process_statement} />
             </Field>
           </div>

@@ -31,7 +31,7 @@ export default async function SubmitPage({
             Submit your artwork
           </h1>
           <p className="mt-5 max-w-2xl text-lg leading-8 text-slate-600">
-            Upload the final image, list the AI tools used, and include your prompt log, base sketches, and a short process statement. Review usually takes 24 to 48 hours.
+            Upload your final image, list the AI tools used, and include a prompt log and short process statement. Entries are open May 4-18.
           </p>
         </div>
 
@@ -82,9 +82,9 @@ export default async function SubmitPage({
               </CardHeader>
               <CardContent className="space-y-4 text-sm leading-6 text-muted-foreground">
                 <Guideline title="Final artwork" body="Upload one high resolution image." />
-                <Guideline title="Prompt log and base sketches" body="Include the prompts you used and any base sketches if you used them." />
+                <Guideline title="Prompt log" body="Include key prompts, what changed between versions, and any edits made after generation." />
                 <Guideline title="AI tools used" body="This is required for every submission." />
-                <Guideline title="Creative process statement" body="Write 50 to 200 words." />
+                <Guideline title="Creative process statement" body="Write 50 to 200 words about your idea, AI use, and artistic decisions." />
                 <Guideline title="Integrity agreement" body="You must sign the academic and ethical integrity agreement." />
               </CardContent>
             </Card>
