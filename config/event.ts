@@ -1,3 +1,5 @@
+// Future show runners should edit this file first.
+// Keep placeholder text simple and restart the dev server after changing these values.
 export const eventConfig = {
   competitionName: "High School AI Art Competition",
   siteTitle: "AI Art Competition",

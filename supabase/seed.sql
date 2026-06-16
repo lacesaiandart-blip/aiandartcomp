@@ -1,5 +1,5 @@
 insert into public.admins (email, active)
-values ('organizer@ucla.edu', true)
+values ('organizer@example.com', true)
 on conflict (email) do nothing;
 
 insert into public.gallery_access_codes (code, active)
