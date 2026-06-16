@@ -9,7 +9,7 @@ function hasSupabaseSessionCookie(request: NextRequest) {
     .some((cookie) => cookie.name.startsWith("sb-") && cookie.name.includes("auth-token"));
 }
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   if (isDemoMode) {
     return NextResponse.next();
   }

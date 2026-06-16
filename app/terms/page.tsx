@@ -60,8 +60,8 @@ export default function TermsPage() {
           content: (
             <>
               <p>
-                The site, competition, judging process, prizes, and related materials are provided on an "as is" and
-                "as available" basis. We may change, pause, or cancel any part of them at any time.
+                The site, competition, judging process, prizes, and related materials are provided on an &quot;as is&quot; and
+                &quot;as available&quot; basis. We may change, pause, or cancel any part of them at any time.
               </p>
               <p>
                 To the fullest extent permitted by law, we disclaim all warranties, including merchantability, fitness

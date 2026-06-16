@@ -10,13 +10,14 @@ import { MAX_VOTES_PER_USER } from "@/lib/votes";
 export default async function GalleryPage({
   searchParams
 }: {
-  searchParams: { theme?: string; school?: string };
+  searchParams: Promise<{ theme?: string; school?: string }>;
 }) {
+  const filters = await searchParams;
   const user = await requireGalleryAccess();
   const [submissions, voteIds] = await Promise.all([
     getApprovedSubmissions({
-      theme: searchParams.theme,
-      school: searchParams.school
+      theme: filters.theme,
+      school: filters.school
     }),
     getUserVoteSubmissionIds(user.id)
   ]);
@@ -41,7 +42,7 @@ export default async function GalleryPage({
             </div>
           </div>
           <form className="surface-card grid gap-3 p-4 sm:grid-cols-[1fr_1fr_auto]">
-            <select name="theme" defaultValue={searchParams.theme ?? ""} className="h-12 rounded-xl border border-input bg-white px-4 text-sm text-slate-700">
+            <select name="theme" defaultValue={filters.theme ?? ""} className="h-12 rounded-xl border border-input bg-white px-4 text-sm text-slate-700">
               <option value="">All themes</option>
               {themes.map((theme) => (
                 <option key={theme} value={theme}>
@@ -49,7 +50,7 @@ export default async function GalleryPage({
                 </option>
               ))}
             </select>
-            <select name="school" defaultValue={searchParams.school ?? ""} className="h-12 rounded-xl border border-input bg-white px-4 text-sm text-slate-700">
+            <select name="school" defaultValue={filters.school ?? ""} className="h-12 rounded-xl border border-input bg-white px-4 text-sm text-slate-700">
               <option value="">All schools</option>
               {schools.map((school) => (
                 <option key={school} value={school}>

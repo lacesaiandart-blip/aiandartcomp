@@ -8,7 +8,8 @@ import { StudentGalleryCode, Submission, SubmissionNotification, VoteSummaryRow 
 
 export async function getSubmissionCountForUser(userId: string) {
   if (isDemoMode) {
-    return Number(cookies().get("demo_submission_count")?.value ?? "0");
+    const cookieStore = await cookies();
+    return Number(cookieStore.get("demo_submission_count")?.value ?? "0");
   }
 
   const supabase = await createClient();
@@ -21,7 +22,7 @@ export async function getSubmissionCountForUser(userId: string) {
   return count ?? 0;
 }
 
-export async function getApprovedSubmissions(filters?: { theme?: string; school?: string }) {
+export async function getApprovedSubmissions(filters?: { theme?: string; school?: string }): Promise<Submission[]> {
   if (isDemoMode) {
     return demoSubmissions.filter((submission) => {
       if (submission.status !== "approved") {
@@ -80,7 +81,7 @@ export async function createSignedImageUrl(path: string) {
   return data?.signedUrl ?? null;
 }
 
-export async function createSignedImageUrls(paths: string[]) {
+export async function createSignedImageUrls(paths: string[]): Promise<Array<string | null>> {
   if (isDemoMode) {
     return paths;
   }
@@ -160,7 +161,8 @@ export async function getVoteSummaryByAudience() {
 
 export async function getUserVoteSubmissionIds(userId: string) {
   if (isDemoMode) {
-    return (cookies().get("demo_votes")?.value ?? "").split(",").filter(Boolean);
+    const cookieStore = await cookies();
+    return (cookieStore.get("demo_votes")?.value ?? "").split(",").filter(Boolean);
   }
 
   const supabase = await createClient();
@@ -206,7 +208,8 @@ export async function getUserSubmissionNotifications(userId: string) {
 
 export async function getUserAssignedGalleryCodes(userId: string) {
   if (isDemoMode) {
-    const count = Number(cookies().get("demo_submission_count")?.value ?? "0");
+    const cookieStore = await cookies();
+    const count = Number(cookieStore.get("demo_submission_count")?.value ?? "0");
 
     if (count === 0) {
       return [] as StudentGalleryCode[];
@@ -281,7 +284,8 @@ export async function getUserAssignedGalleryCodes(userId: string) {
 
 export async function getUserRedeemedGalleryCodes(userId: string) {
   if (isDemoMode) {
-    const redeemedCode = cookies().get("demo_gallery_access")?.value;
+    const cookieStore = await cookies();
+    const redeemedCode = cookieStore.get("demo_gallery_access")?.value;
     return redeemedCode ? [redeemedCode] : [];
   }
 

@@ -30,7 +30,8 @@ export async function requireGalleryAccess() {
   const user = await requireUser("/gallery/access");
 
   if (isDemoMode) {
-    const hasGrant = cookies().get("demo_gallery_access")?.value === DEMO_GALLERY_CODE;
+    const cookieStore = await cookies();
+    const hasGrant = cookieStore.get("demo_gallery_access")?.value === DEMO_GALLERY_CODE;
 
     if (!hasGrant) {
       redirect("/gallery/access");
@@ -58,7 +59,8 @@ export async function requireJudgeAccess() {
   const user = await requireUser("/judge/access");
 
   if (isDemoMode) {
-    const hasGrant = cookies().get("demo_judge_access")?.value === DEMO_JUDGE_CODE;
+    const cookieStore = await cookies();
+    const hasGrant = cookieStore.get("demo_judge_access")?.value === DEMO_JUDGE_CODE;
 
     if (!hasGrant) {
       redirect("/judge/access");

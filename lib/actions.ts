@@ -242,10 +242,11 @@ export async function signUpWithPasswordAction(formData: FormData) {
 
 export async function signOutAction() {
   if (isDemoMode) {
-    cookies().delete("demo_gallery_access");
-    cookies().delete("demo_judge_access");
-    cookies().delete("demo_submission_count");
-    cookies().delete("demo_votes");
+    const cookieStore = await cookies();
+    cookieStore.delete("demo_gallery_access");
+    cookieStore.delete("demo_judge_access");
+    cookieStore.delete("demo_submission_count");
+    cookieStore.delete("demo_votes");
     redirect("/");
   }
 
@@ -264,13 +265,14 @@ export async function submitArtworkAction(formData: FormData) {
   }
 
   if (isDemoMode) {
-    const currentCount = Number(cookies().get("demo_submission_count")?.value ?? "0");
+    const cookieStore = await cookies();
+    const currentCount = Number(cookieStore.get("demo_submission_count")?.value ?? "0");
 
     if (currentCount >= MAX_SUBMISSIONS_PER_USER) {
       redirect("/submit?error=You have already reached the two-entry limit.");
     }
 
-    cookies().set("demo_submission_count", String(currentCount + 1), {
+    cookieStore.set("demo_submission_count", String(currentCount + 1), {
       httpOnly: true,
       sameSite: "lax",
       path: "/"
@@ -361,7 +363,8 @@ export async function grantGalleryAccessAction(formData: FormData) {
       redirect(`/gallery/access?error=${encodeURIComponent("Invalid gallery access code.")}&code=${encodeURIComponent(code)}`);
     }
 
-    cookies().set("demo_gallery_access", code, {
+    const cookieStore = await cookies();
+    cookieStore.set("demo_gallery_access", code, {
       httpOnly: true,
       sameSite: "lax",
       path: "/"
@@ -443,7 +446,8 @@ export async function grantJudgeAccessAction(formData: FormData) {
       redirect("/judge/access?error=Invalid judge code.");
     }
 
-    cookies().set("demo_judge_access", code, {
+    const cookieStore = await cookies();
+    cookieStore.set("demo_judge_access", code, {
       httpOnly: true,
       sameSite: "lax",
       path: "/"
@@ -494,7 +498,8 @@ export async function submitVoteAction(formData: FormData) {
   }
 
   if (isDemoMode) {
-    const votedIds = new Set((cookies().get("demo_votes")?.value ?? "").split(",").filter(Boolean));
+    const cookieStore = await cookies();
+    const votedIds = new Set((cookieStore.get("demo_votes")?.value ?? "").split(",").filter(Boolean));
 
     if (votedIds.has(submissionId)) {
       redirect(`${destination}?error=You already used a vote on this artwork.`);
@@ -515,7 +520,7 @@ export async function submitVoteAction(formData: FormData) {
     }
 
     votedIds.add(submissionId);
-    cookies().set("demo_votes", [...votedIds].join(","), {
+    cookieStore.set("demo_votes", [...votedIds].join(","), {
       httpOnly: true,
       sameSite: "lax",
       path: "/"
@@ -579,14 +584,15 @@ export async function removeVoteAction(formData: FormData) {
   const { user } = await requireVotingAccess(accessType);
 
   if (isDemoMode) {
-    const votedIds = new Set((cookies().get("demo_votes")?.value ?? "").split(",").filter(Boolean));
+    const cookieStore = await cookies();
+    const votedIds = new Set((cookieStore.get("demo_votes")?.value ?? "").split(",").filter(Boolean));
 
     if (!votedIds.has(submissionId)) {
       redirect(`${destination}?error=No existing vote found for this artwork.`);
     }
 
     votedIds.delete(submissionId);
-    cookies().set("demo_votes", [...votedIds].join(","), {
+    cookieStore.set("demo_votes", [...votedIds].join(","), {
       httpOnly: true,
       sameSite: "lax",
       path: "/"

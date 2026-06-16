@@ -11,8 +11,9 @@ import { MAX_VOTES_PER_USER } from "@/lib/votes";
 export default async function JudgePage({
   searchParams
 }: {
-  searchParams: { error?: string; success?: string };
+  searchParams: Promise<{ error?: string; success?: string }>;
 }) {
+  const params = await searchParams;
   const { user } = await requireJudgeAccess();
   const [submissions, voteIds] = await Promise.all([
     getApprovedSubmissions(),
@@ -34,9 +35,9 @@ export default async function JudgePage({
           Demo mode saves voting state in cookies for this browser only.
         </p>
       ) : null}
-      {searchParams.error ? <p className="mb-4 rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">{searchParams.error}</p> : null}
-      {searchParams.success === "1" ? <p className="mb-4 rounded-md border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm text-emerald-700">Marked as one of your top picks.</p> : null}
-      {searchParams.success === "removed" ? <p className="mb-4 rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-700">Vote removed.</p> : null}
+      {params.error ? <p className="mb-4 rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">{params.error}</p> : null}
+      {params.success === "1" ? <p className="mb-4 rounded-md border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm text-emerald-700">Marked as one of your top picks.</p> : null}
+      {params.success === "removed" ? <p className="mb-4 rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-700">Vote removed.</p> : null}
       {submissions.length === 0 ? (
         <Card>
           <CardHeader>
