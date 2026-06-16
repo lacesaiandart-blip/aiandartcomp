@@ -88,6 +88,7 @@ export default async function GalleryPage({
                           alt={submission.artwork_title}
                           fill
                           sizes="(min-width: 1280px) 33vw, (min-width: 640px) 50vw, 100vw"
+                          loading={index === 0 ? "eager" : "lazy"}
                           className="object-cover transition-transform duration-300 group-hover:scale-[1.02]"
                         />
                       ) : null}
