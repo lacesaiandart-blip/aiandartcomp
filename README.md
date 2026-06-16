@@ -22,6 +22,7 @@ Use this map when handing the site to a new show runner.
 ├── components/                  Shared React components and form controls
 ├── config/event.ts              Main event settings for future organizers
 ├── lib/                         Supabase clients, auth helpers, queries, validation
+├── Promotional Materials 2026/  Editable/exported materials for promoting the show
 ├── public/                      Static files served by the website
 │   ├── demo/                    Demo artwork used before Supabase is connected
 │   └── service-worker.js        Empty service worker file to prevent browser 404 noise
@@ -44,7 +45,7 @@ Create or get access to these accounts:
 - GitHub, to store the website code
 - Supabase, to store accounts, submissions, votes, access codes, and images
 - Vercel, to host the live website
-- Twilio SendGrid, for production account confirmation and password emails through Supabase Auth
+- SendGrid, for production account confirmation and password emails through Supabase Auth
 
 Install these on your computer:
 
@@ -214,7 +215,7 @@ Then add local auth redirects:
 http://localhost:3000/auth/callback
 ```
 
-## 9. Set Up Production Email With Twilio SendGrid SMTP
+## 9. Set Up Production Email With SendGrid SMTP
 
 Supabase sends account confirmation and password reset emails. The default Supabase email server is only for testing. For a real public competition, set up custom SMTP before launch so students can receive account emails reliably.
 
@@ -222,7 +223,7 @@ This app does not send custom SendGrid emails itself. SendGrid is only used by S
 
 ### Create SendGrid SMTP Credentials
 
-1. Go to [Twilio SendGrid](https://sendgrid.com/) and create or open an account.
+1. Go to [SendGrid](https://sendgrid.com/) and create or open an account.
 2. Verify a sender identity or sending domain.
 3. Create an API key with Mail Send permission.
 4. Copy the API key immediately. You will not be able to see it again later.
@@ -442,7 +443,7 @@ npm run build
 
 If sign-in redirects fail, check Supabase **Authentication** > **URL Configuration** and confirm both local and Vercel callback URLs are listed.
 
-If sign-up or password emails do not arrive, check Supabase **Authentication** > **Settings** > **SMTP Settings**, then check Twilio SendGrid sender verification and activity logs.
+If sign-up or password emails do not arrive, check Supabase **Authentication** > **Settings** > **SMTP Settings**, then check SendGrid sender verification and activity logs.
 
 If uploads fail, confirm the storage bucket is private and named `submissions`, and confirm `SUPABASE_SERVICE_ROLE_KEY` is set in both `.env.local` and Vercel.
 
