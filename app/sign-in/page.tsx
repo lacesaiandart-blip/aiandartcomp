@@ -11,16 +11,17 @@ import { signInWithPasswordAction, signUpWithPasswordAction } from "@/lib/action
 export default async function SignInPage({
   searchParams
 }: {
-  searchParams: { next?: string; error?: string; created?: string; email?: string; mode?: string; notice?: string };
+  searchParams: Promise<{ next?: string; error?: string; created?: string; email?: string; mode?: string; notice?: string }>;
 }) {
+  const params = await searchParams;
   const user = await getSession();
-  const next = sanitizeNextPath(searchParams.next);
+  const next = sanitizeNextPath(params.next);
 
   if (user) {
     redirect(next);
   }
 
-  const mode = searchParams.mode === "create-account" ? "create-account" : "sign-in";
+  const mode = params.mode === "create-account" ? "create-account" : "sign-in";
 
   return (
     <main className="mx-auto flex min-h-[calc(100vh-80px)] max-w-6xl items-center px-4 py-12 sm:px-6">
@@ -63,17 +64,17 @@ export default async function SignInPage({
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-          {searchParams.notice === "signin" ? (
+          {params.notice === "signin" ? (
             <p className="rounded-md border border-sky-200 bg-sky-50 px-3 py-2 text-sm text-sky-800">
               Please sign in first.
             </p>
           ) : null}
-          {searchParams.error ? (
-            <p className="rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">{searchParams.error}</p>
+          {params.error ? (
+            <p className="rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">{params.error}</p>
           ) : null}
-          {searchParams.created ? (
+          {params.created ? (
             <p className="rounded-md border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm text-emerald-700">
-              Account created for {searchParams.email ?? "your email"}. Check your inbox if you need to confirm your email, then sign in.
+              Account created for {params.email ?? "your email"}. Check your inbox if you need to confirm your email, then sign in.
             </p>
           ) : null}
             {mode === "sign-in" ? (
@@ -81,7 +82,7 @@ export default async function SignInPage({
                 <input type="hidden" name="next" value={next} />
                 <div className="space-y-2">
                   <Label htmlFor="sign-in-email">Email</Label>
-                  <Input id="sign-in-email" name="email" type="email" placeholder="you@example.com" defaultValue={searchParams.email ?? ""} required />
+                  <Input id="sign-in-email" name="email" type="email" placeholder="you@example.com" defaultValue={params.email ?? ""} required />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="sign-in-password">Password</Label>
@@ -94,7 +95,7 @@ export default async function SignInPage({
             ) : (
               <CreateAccountForm
                 action={signUpWithPasswordAction}
-                defaultEmail={searchParams.email ?? ""}
+                defaultEmail={params.email ?? ""}
                 next={next}
               />
             )}

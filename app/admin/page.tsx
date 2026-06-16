@@ -9,8 +9,9 @@ import { updateSubmissionStatusAction } from "@/lib/actions";
 export default async function AdminPage({
   searchParams
 }: {
-  searchParams: { demo?: string; error?: string };
+  searchParams: Promise<{ demo?: string; error?: string }>;
 }) {
+  const params = await searchParams;
   const { user, isAdmin } = await getAdminAccess();
 
   if (!isAdmin) {
@@ -51,7 +52,7 @@ export default async function AdminPage({
           Demo mode shows a fixed moderation dataset. Status changes are preview-only.
         </p>
       ) : null}
-      {searchParams.demo ? (
+      {params.demo ? (
         <p className="mb-4 rounded-md border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm text-emerald-700">
           Demo action received. The sample dataset stays unchanged.
         </p>
@@ -112,7 +113,7 @@ export default async function AdminPage({
                 <Card key={submission.id} className={submissionStatusCardClass(submission.status)}>
                   <div className="grid gap-5 p-5 lg:grid-cols-[220px_1fr]">
                     <div className="relative aspect-[4/3] overflow-hidden rounded-lg border bg-secondary">
-                      {imageUrl ? <Image src={imageUrl} alt={submission.artwork_title} fill className="object-cover" /> : null}
+                      {imageUrl ? <Image src={imageUrl} alt={submission.artwork_title} fill sizes="(min-width: 1024px) 220px, 100vw" className="object-cover" /> : null}
                     </div>
                     <div className="space-y-3">
                       <div>

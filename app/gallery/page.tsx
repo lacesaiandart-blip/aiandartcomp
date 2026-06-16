@@ -83,7 +83,13 @@ export default async function GalleryPage({
                   >
                     <div className="relative aspect-[4/3] overflow-hidden bg-secondary">
                       {imageUrls[index] ? (
-                        <Image src={imageUrls[index] as string} alt={submission.artwork_title} fill className="object-cover transition-transform duration-300 group-hover:scale-[1.02]" />
+                        <Image
+                          src={imageUrls[index] as string}
+                          alt={submission.artwork_title}
+                          fill
+                          sizes="(min-width: 1280px) 33vw, (min-width: 640px) 50vw, 100vw"
+                          className="object-cover transition-transform duration-300 group-hover:scale-[1.02]"
+                        />
                       ) : null}
                       <div className="absolute left-4 top-4 rounded-full bg-white/92 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-700 shadow-sm">
                         {submission.theme}

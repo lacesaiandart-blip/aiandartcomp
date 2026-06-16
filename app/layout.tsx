@@ -20,7 +20,7 @@ export default async function RootLayout({
   const redeemedGalleryCodes = user ? await getUserRedeemedGalleryCodes(user.id) : [];
 
   return (
-    <html lang="en">
+    <html lang="en" data-scroll-behavior="smooth">
       <body>
         <SiteShell user={user} redeemedGalleryCodes={redeemedGalleryCodes}>
           {isDemoMode ? (

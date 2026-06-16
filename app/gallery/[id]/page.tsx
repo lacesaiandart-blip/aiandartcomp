@@ -13,12 +13,13 @@ export default async function GalleryDetailPage({
   params,
   searchParams
 }: {
-  params: { id: string };
-  searchParams: { error?: string; success?: string };
+  params: Promise<{ id: string }>;
+  searchParams: Promise<{ error?: string; success?: string }>;
 }) {
+  const [{ id }, query] = await Promise.all([params, searchParams]);
   await requireGalleryAccess();
   const user = await getSession();
-  const submission = await getSubmissionById(params.id);
+  const submission = await getSubmissionById(id);
 
   if (!submission || submission.status !== "approved") {
     notFound();
@@ -66,8 +67,8 @@ export default async function GalleryDetailPage({
                     by {submission.student_name} · {submission.school}
                   </p>
                 </div>
-                {searchParams.error ? <p className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">{searchParams.error}</p> : null}
-                {searchParams.success === "removed" ? <p className="rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-700">Vote removed.</p> : null}
+                {query.error ? <p className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">{query.error}</p> : null}
+                {query.success === "removed" ? <p className="rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-700">Vote removed.</p> : null}
                 <div className="rounded-[24px] bg-slate-50 px-5 py-4">
                   <p className="font-semibold text-slate-900">{remainingVotes} of {eventConfig.maxVotesPerUser} viewer votes remaining</p>
                   <p className="mt-1 text-sm text-slate-600">Use votes on the works you want as your top picks. You can support up to {eventConfig.maxVotesPerUser} different submissions.</p>

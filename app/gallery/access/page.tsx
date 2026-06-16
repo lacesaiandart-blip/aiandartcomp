@@ -11,8 +11,9 @@ import { isDemoMode } from "@/lib/env";
 export default async function GalleryAccessPage({
   searchParams
 }: {
-  searchParams: { error?: string; code?: string };
+  searchParams: Promise<{ error?: string; code?: string }>;
 }) {
+  const params = await searchParams;
   await ensureProfile();
 
   return (
@@ -36,7 +37,7 @@ export default async function GalleryAccessPage({
               <CardDescription>Use a one-time code shared on a student fundraiser strip, given away by a student, or provided by the organizers.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-5">
-              {searchParams.error ? <p className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">{searchParams.error}</p> : null}
+              {params.error ? <p className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">{params.error}</p> : null}
               {isDemoMode ? (
                 <p className="rounded-2xl border border-sky-100 bg-sky-50 px-4 py-3 text-sm text-sky-800">
                   Demo code: <span className="font-semibold text-slate-950">{DEMO_GALLERY_CODE}</span>
@@ -50,7 +51,7 @@ export default async function GalleryAccessPage({
                     name="code"
                     placeholder="ART-ABCD-EFGH"
                     autoCapitalize="characters"
-                    defaultValue={searchParams.code ?? ""}
+                    defaultValue={params.code ?? ""}
                     required
                   />
                 </div>

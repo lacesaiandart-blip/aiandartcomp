@@ -10,8 +10,9 @@ import { isDemoMode } from "@/lib/env";
 export default async function JudgeAccessPage({
   searchParams
 }: {
-  searchParams: { error?: string };
+  searchParams: Promise<{ error?: string }>;
 }) {
+  const params = await searchParams;
   await ensureProfile();
 
   return (
@@ -33,7 +34,7 @@ export default async function JudgeAccessPage({
               <CardDescription>Use the code assigned to your judging account.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-5">
-              {searchParams.error ? <p className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">{searchParams.error}</p> : null}
+              {params.error ? <p className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">{params.error}</p> : null}
               {isDemoMode ? (
                 <p className="rounded-2xl border border-sky-100 bg-sky-50 px-4 py-3 text-sm text-sky-800">
                   Demo code: <span className="font-semibold text-slate-950">{DEMO_JUDGE_CODE}</span>

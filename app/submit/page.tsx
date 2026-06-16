@@ -11,8 +11,9 @@ import type { StudentGalleryCode, SubmissionNotification } from "@/lib/types";
 export default async function SubmitPage({
   searchParams
 }: {
-  searchParams: { error?: string; success?: string; packet_error?: string };
+  searchParams: Promise<{ error?: string; success?: string; packet_error?: string }>;
 }) {
+  const params = await searchParams;
   const user = await ensureProfile();
   const [count, statusSummary, notifications, galleryCodes] = await Promise.all([
     getSubmissionCountForUser(user.id),
@@ -21,7 +22,7 @@ export default async function SubmitPage({
     getUserAssignedGalleryCodes(user.id)
   ]);
   const remaining = Math.max(MAX_SUBMISSIONS_PER_USER - count, 0);
-  const hasFreshPacket = Boolean(searchParams.success) && galleryCodes.length > 0;
+  const hasFreshPacket = Boolean(params.success) && galleryCodes.length > 0;
 
   return (
     <main className="page-wash">
@@ -53,7 +54,7 @@ export default async function SubmitPage({
                 </StatusBanner>
               )
             ) : null}
-            {searchParams.packet_error ? (
+            {params.packet_error ? (
               <StatusBanner tone="info">
                 Your submission was saved, but your gallery fundraiser codes could not be prepared yet. Refresh this page in a moment, and if they still do not appear, contact an organizer.
               </StatusBanner>
@@ -67,8 +68,8 @@ export default async function SubmitPage({
               defaultName={user.user_metadata.full_name ?? user.user_metadata.name ?? ""}
               defaultEmail={user.email ?? ""}
               remaining={remaining}
-              serverError={searchParams.error}
-              success={Boolean(searchParams.success)}
+              serverError={params.error}
+              success={Boolean(params.success)}
               isDemoMode={isDemoMode}
             />
           </div>
