@@ -4,6 +4,39 @@ This is a Next.js website for running a high school AI art competition. It suppo
 
 This guide assumes you are starting from zero: you have the GitHub repository, but you have not installed the site, created Supabase, or deployed to Vercel yet.
 
+## File Tree
+
+Use this map when handing the site to a new show runner.
+
+```text
+.
+├── app/                         Website pages and route handlers
+│   ├── page.tsx                 Homepage
+│   ├── submit/                  Student submission page and gallery-code API
+│   ├── gallery/                 Private gallery pages
+│   ├── judge/                   Judge access and voting pages
+│   ├── admin/                   Organizer dashboard
+│   ├── auth/callback/           Supabase sign-in callback route
+│   ├── privacy/                 Privacy page
+│   └── terms/                   Terms page
+├── components/                  Shared React components and form controls
+├── config/event.ts              Main event settings for future organizers
+├── lib/                         Supabase clients, auth helpers, queries, validation
+├── public/                      Static files served by the website
+│   ├── demo/                    Demo artwork used before Supabase is connected
+│   └── service-worker.js        Empty service worker file to prevent browser 404 noise
+├── supabase/
+│   ├── schema.sql               The one database schema file to paste into Supabase
+│   └── seed.sql                 Optional sample admin/code data for local testing
+├── .env.example                 Environment variable template
+├── package.json                 Scripts and npm dependencies
+├── package-lock.json            Locked dependency versions
+├── README.md                    This setup guide
+└── next.config.mjs              Next.js configuration
+```
+
+Most yearly setup changes should happen in [`config/event.ts`](config/event.ts), `.env.local`, Vercel environment variables, and Supabase settings. Do not create extra schema patch files for future organizers; update [`supabase/schema.sql`](supabase/schema.sql) so setup stays copy-paste simple.
+
 ## What You Need
 
 Create or get access to these accounts:

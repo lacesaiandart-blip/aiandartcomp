@@ -291,6 +291,7 @@ on public.votes for select
 using (auth.uid() = user_id or public.is_admin());
 
 drop policy if exists "votes insert self" on public.votes;
+drop policy if exists "votes insert with access" on public.votes;
 create policy "votes insert with access"
 on public.votes for insert
 with check (
