@@ -214,7 +214,7 @@ export function SubmissionForm({
               <Input
                 id="school"
                 name="school"
-                placeholder="Roosevelt High School"
+                placeholder="Your high school"
                 className={inputClass(sharedInputClass, fieldErrors.school)}
                 aria-invalid={Boolean(fieldErrors.school)}
                 onChange={() => clearFieldError("school")}

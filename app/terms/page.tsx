@@ -17,8 +17,8 @@ export default function TermsPage() {
       intro={
         <>
           <p>
-            This site is operated by student groups at UCLA and local volunteers to support a nonprofit educational
-            cause. By using the site or submitting artwork, you agree to these terms.
+            This site is operated by competition organizers and volunteers for an educational art event. By using the
+            site or submitting artwork, you agree to these terms.
           </p>
         </>
       }

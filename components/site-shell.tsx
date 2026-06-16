@@ -75,7 +75,7 @@ export function SiteShell({ user, redeemedGalleryCodes = [], children }: SiteShe
       {children}
       <footer className="border-t border-white/70 bg-white/60">
         <div className="mx-auto flex max-w-6xl flex-col gap-2 px-4 py-8 text-sm text-slate-600 sm:px-6 md:flex-row md:items-center md:justify-between">
-          <p>Organized by student groups at UCLA and local volunteers</p>
+          <p>High School AI Art Competition</p>
           <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
             <Link href="/terms" className="transition-colors hover:text-slate-900">
               Terms

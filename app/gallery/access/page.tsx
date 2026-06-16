@@ -65,7 +65,7 @@ export default async function GalleryAccessPage({
                   to friends, family, teachers, or supporters, or sold as fundraisers for $1 cash. When a viewer
                   signs in and enters one code here, that code unlocks the private online gallery for that account.
                   Once a code is redeemed, it cannot be reused and stays linked to that viewer account. Please turn in
-                  any funds raised to the LACES front office.
+                  any funds raised to the organizers.
                 </p>
               </div>
               <div className="flex flex-wrap items-center justify-center gap-3 pt-2 text-xs font-medium uppercase tracking-[0.18em] text-slate-500">

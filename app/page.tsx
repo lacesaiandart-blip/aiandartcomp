@@ -32,7 +32,7 @@ const galleryCodeRules = [
   "1 code is reserved for the student who submitted the artwork.",
   "10 fundraiser codes can be printed as strips and given away to friends, family, teachers, or supporters, or sold for $1 cash each.",
   "When a viewer signs in and enters a code, it unlocks the private online gallery on that account.",
-  "Please turn in any funds raised to the LACES front office.",
+  "Please turn in any funds raised to the organizers.",
   "Each code works once and then stays linked to that viewer account."
 ];
 
@@ -64,7 +64,7 @@ export default function HomePage() {
               Competition
             </h1>
             <p className="mt-6 text-lg leading-8 text-slate-600">
-              Open to all LACES students from May 4-18. Choose one theme and use public AI tools to create original generative artwork.
+              Open to high school students during the entry window. Choose one theme and use public AI tools to create original generative artwork.
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <Link href="/submit" className="inline-flex h-12 items-center justify-center rounded-xl bg-primary px-6 text-sm font-semibold text-primary-foreground shadow-[0_10px_24px_rgba(33,99,179,0.22)] transition-all hover:-translate-y-0.5 hover:bg-primary/92">
@@ -79,7 +79,7 @@ export default function HomePage() {
             </Link>
             <div className="mt-10 grid gap-3 sm:grid-cols-3">
               <StatCard label="Entries" value="Up to 2" />
-              <StatCard label="Dates" value="May 4-18" />
+              <StatCard label="Dates" value="Entry window" />
               <StatCard label="Access" value="Invite code" />
             </div>
           </div>
@@ -191,9 +191,9 @@ export default function HomePage() {
         <div className="grid gap-12 lg:grid-cols-[0.9fr_1.1fr]">
           <div>
             <p className="section-label">Cash Awards</p>
-            <h2 className="mt-4 text-4xl font-semibold tracking-[-0.05em] text-slate-950">Cash awards and a UCLA campus tour</h2>
+            <h2 className="mt-4 text-4xl font-semibold tracking-[-0.05em] text-slate-950">Cash awards and a campus tour</h2>
             <p className="mt-5 text-base leading-7 text-slate-600">
-              Winners will also be invited to a UCLA campus tour led by UCLA student groups.
+              Winners may also be invited to a campus tour led by partner student groups.
             </p>
           </div>
           <div className="grid gap-4 sm:grid-cols-3">

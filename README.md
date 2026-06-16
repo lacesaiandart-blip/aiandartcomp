@@ -1,6 +1,6 @@
 # High School AI Art Competition
 
-Minimal Next.js 14 MVP for a UCLA student-run high school AI art competition. The app uses Supabase for email/password auth, Postgres data, and image storage.
+Minimal Next.js 14 MVP for a student-run high school AI art competition. The app uses Supabase for email/password auth, Postgres data, and image storage.
 
 ## Stack
 
@@ -46,8 +46,8 @@ Demo mode uses:
    - `http://localhost:3000/auth/callback`
    - `https://your-vercel-domain.vercel.app/auth/callback`
 6. Create a private storage bucket named `submissions`.
-7. Run [`supabase/schema.sql`](/Users/ktejwani/UCLA%20Files/Playground%20Code/LACES%20AI%20Art%20Comp/supabase/schema.sql).
-8. Optionally run [`supabase/seed.sql`](/Users/ktejwani/UCLA%20Files/Playground%20Code/LACES%20AI%20Art%20Comp/supabase/seed.sql).
+7. Run [`supabase/schema.sql`](supabase/schema.sql).
+8. Optionally run [`supabase/seed.sql`](supabase/seed.sql).
 
 ## Local development
 
@@ -66,11 +66,11 @@ LOCAL_DEMO_MODE=true npm run build
 
 ## App structure
 
-- [`app`](/Users/ktejwani/UCLA%20Files/Playground%20Code/LACES%20AI%20Art%20Comp/app): App Router pages, route handlers, loading and not-found UI
-- [`components`](/Users/ktejwani/UCLA%20Files/Playground%20Code/LACES%20AI%20Art%20Comp/components): shared UI and shell components
-- [`lib`](/Users/ktejwani/UCLA%20Files/Playground%20Code/LACES%20AI%20Art%20Comp/lib): Supabase clients, auth/access helpers, queries, server actions
-- [`middleware.ts`](/Users/ktejwani/UCLA%20Files/Playground%20Code/LACES%20AI%20Art%20Comp/middleware.ts): auth gate for protected routes
-- [`supabase`](/Users/ktejwani/UCLA%20Files/Playground%20Code/LACES%20AI%20Art%20Comp/supabase): SQL schema and seed data
+- [`app`](app): App Router pages, route handlers, loading and not-found UI
+- [`components`](components): shared UI and shell components
+- [`lib`](lib): Supabase clients, auth/access helpers, queries, server actions
+- [`middleware.ts`](middleware.ts): auth gate for protected routes
+- [`supabase`](supabase): SQL schema and seed data
 
 ## Product decisions
 

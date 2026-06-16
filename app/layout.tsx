@@ -7,7 +7,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "High School AI Art Competition",
-  description: "A high school AI art competition organized by student groups at UCLA and local volunteers."
+  description: "An AI art competition for high school students."
 };
 
 export default async function RootLayout({

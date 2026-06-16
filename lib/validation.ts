@@ -35,8 +35,8 @@ export const submissionSchema = z.object({
         message: minLengthMessage(
           value,
           MIN_PROMPT_LOG_LENGTH,
-          "Prompt log and base sketches",
-          "Include the key prompts, any base sketches you used, what changed between versions, and any edits you made after generation."
+          "Prompt log",
+          "Include key prompts, what changed between versions, and any edits you made after generation."
         )
       });
     }
@@ -51,7 +51,7 @@ export const submissionSchema = z.object({
     if (words < MIN_PROCESS_STATEMENT_WORDS) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        message: `Creative process statement is too short. Write at least ${MIN_PROCESS_STATEMENT_WORDS} words. Explain your idea, the choices you made, and how you shaped the final result.`
+        message: `Creative process statement is too short. Write at least ${MIN_PROCESS_STATEMENT_WORDS} words about your idea, AI use, and artistic decisions.`
       });
     }
 

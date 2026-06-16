@@ -83,7 +83,7 @@ function notificationForStatus(artworkTitle: string, status: SubmissionStatus) {
   return {
     kind: "pending" as const,
     message_title: "Submission received",
-    message_body: `"${artworkTitle}" is under review. Organizer review usually takes 24-48 hours.`
+    message_body: `"${artworkTitle}" is under review. Organizer updates will appear on your submission page.`
   };
 }
 

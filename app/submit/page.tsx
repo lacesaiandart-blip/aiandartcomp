@@ -31,7 +31,7 @@ export default async function SubmitPage({
             Submit your artwork
           </h1>
           <p className="mt-5 max-w-2xl text-lg leading-8 text-slate-600">
-            Upload your final image, list the AI tools used, and include a prompt log and short process statement. Entries are open May 4-18.
+            Upload your final image, list the AI tools used, and include a prompt log and short process statement.
           </p>
         </div>
 
@@ -40,15 +40,15 @@ export default async function SubmitPage({
             {notifications.length === 0 ? (
               statusSummary.approvedCount > 0 ? (
                 <StatusBanner tone="success">
-                  One of your submissions has been approved and is now visible in the competition. Review for new submissions can still take 24-48 hours.
+                  One of your submissions has been approved and is now visible in the competition. New submissions will appear here after organizer review.
                 </StatusBanner>
               ) : statusSummary.pendingCount > 0 ? (
                 <StatusBanner tone="info">
-                  Your submission is in review. Organizer review usually takes 24-48 hours.
+                  Your submission is in review. Organizer updates will appear here.
                 </StatusBanner>
               ) : (
                 <StatusBanner tone="info">
-                  After you submit, organizer review usually takes 24-48 hours.
+                  After you submit, organizer updates will appear here.
                 </StatusBanner>
               )
             ) : null}
@@ -237,7 +237,7 @@ function GalleryCodePacketCard({
           <p className="mt-2">
             Submit at least one artwork, keep the reserved student code for the student who entered, and print the 10
             fundraiser codes below as strips. These can be given away or sold as fundraisers for $1 cash. Please turn
-            in any funds raised to the LACES front office. A viewer signs in, enters one code, and that code becomes
+            in any funds raised to the organizers. A viewer signs in, enters one code, and that code becomes
             permanently tied to their gallery account.
           </p>
         </div>
